@@ -1,0 +1,7 @@
+0159cdcbe380d50584e3d2784efa0d1ad3057946
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+/uploads/avatars

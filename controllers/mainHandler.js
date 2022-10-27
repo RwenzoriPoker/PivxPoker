@@ -1,0 +1,78 @@
+const crypto = require('crypto');
+const User = require('../models/user');
+
+module.exports = (io, socket, tournaments, cashGames, sitGames, users) => {
+
+  const disconnectUser = () => {
+
+    // for(let i=0;i<sitGames.length;i++){
+    //   let n=-1;
+    //   if((n=sitGames[i].players.findIndex(ele=>ele.id==socket.id))>-1){
+    //     sitGames[i].players.splice(n,1);
+    //     io.to(sitGames[i].roomId).emit('sit:leave');
+    //   }
+    // }
+    for(let i=0;i<users.length;i++){
+      if(users[i].socketId==socket.id){
+        users.splice(i,1);
+      }
+    }
+    
+   
+  };
+
+  const getLobby=async (callback) => {    
+    callback({
+      tournaments: tournaments.map((ele)=>{
+        const item={};
+        item.title=ele.title;
+        item.buyIn=ele.buyIn;
+        item.prizePool=ele.prizePool;
+        item.playersCount = ele.players.filter((ele1) => ele1 != null).length;
+        item.players= ele.players.filter((ele1) => ele1 != null).map((ele1) => ele1.user.id);        
+        item.tableSize=ele.tableSize;
+        item.status=ele.status;
+        return item;
+      }),
+      cashGames: cashGames.map((ele)=>{
+        const item={};
+        item.id=ele.id;
+        item.name=ele.name;
+        item.blinds=ele.blinds;
+        item.buyIn=ele.buyIn;
+        item.tableSize=ele.tableSize;
+        item.turnTime = ele.turnTime;
+        item.privacy = ele.privacy;
+        item.playersCount = ele.players.filter((ele1) => ele1 != null).length;
+        item.players= ele.players.filter((ele1) => ele1 != null).map((ele1) => ele1.user.id);
+        item.limit=ele.limit;
+        return item;
+      }),
+      sitGames: sitGames.map((ele)=>{
+        const item={};
+        item.id=ele.id;
+        item.name=ele.name;
+        item.blindSchedule=ele.blindSchedule;
+        item.buyIn=ele.buyIn;
+        item.tableSize=ele.tableSize;
+        item.startingStack=ele.startingStack;
+        item.firstPlace=ele.firstPlace;
+        item.secondPlace=ele.secondPlace;
+        item.thirdPlace=ele.thirdPlace;
+        item.turnTime = ele.turnTime;
+        item.privacy = ele.privacy;
+        item.playersCount = ele.players.filter((ele1) => ele1 != null).length;
+        item.players= ele.players.filter((ele1) => ele1 != null).map((ele1) => ele1.user.id);
+        item.limit=ele.limit;
+        item.playing=ele.playing;
+        return item;
+      }),
+      pivx:socket.user ? socket.user.pivx : 0
+    });
+  };
+
+  
+  socket.on('disconnect', disconnectUser);
+
+  socket.on('lobby', getLobby);
+};
