@@ -63,7 +63,7 @@ function solver(hand) {
   if (flags.isStraight) { return { rank: 4, desc: 'Straight', value: handValues[0] }; }
   if (flags.isThreeOfAKind) { return { rank: 3, desc: 'Three of a Kind', value: handValues[0], value2: handValues[1], value3: handValues[2]}; }
   if (flags.isTwoPair) { return { rank: 2, desc: 'Two Pair', value: handValues[0], value2: handValues[1], value3: handValues[2] }; }
-  if (flags.isPair) { return { rank: 5, desc: 'One Pair', value: handValues[0], value2: handValues[1], value3: handValues[2], value4: handValues[3] }; }  
+  if (flags.isPair) { return { rank: 1, desc: 'One Pair', value: handValues[0], value2: handValues[1], value3: handValues[2], value4: handValues[3] }; }  
   return { rank: 0, desc: 'High Card', value: handValues[0], value2: handValues[1], value3: handValues[2], value4: handValues[3], value5: handValues[4]};
 }
 function HasAFlush(cards) {
