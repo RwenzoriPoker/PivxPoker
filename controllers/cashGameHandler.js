@@ -377,7 +377,7 @@ module.exports = (io, socket, cashGames) => {
     io.to(cashGame.roomId).emit('cash:open', filterTableToShow(cashGame, null, true));
     //compare the result
     let players = cashGame.players;
-    const top = { rank: 0, value: [], index: [] };
+    const top = { rank: 0, value: 0, value2: 0, value3: 0, value4: 0, value5: 0, index: [] };
     for (let i = 0; i < players.length; i++) {
       if (players[i] == null || !players[i].ready || players[i].stand || players[i].fold) continue;
       const hands = [];
@@ -389,22 +389,69 @@ module.exports = (io, socket, cashGames) => {
       hands.push(new Card(players[i].cards[0]));
       hands.push(new Card(players[i].cards[1]));
       players[i].result = solver(hands);
-      if (top.rank < players[i].result.rank) {
+      if (top.rank < players[i].result.rank) { //players rank is higher than top rank
         top.rank = players[i].result.rank;
         top.value = players[i].result.value;
         top.index = [i];
-      
-
-      } else if (
-        top.rank == players[i].result.rank &&
-        valueCompare(top.value, players[i].result.value)==1
-      ) {
-        top.rank = players[i].result.rank;
-        top.value = players[i].result.value;
-        top.index = [i];
-      } else if( top.rank == players[i].result.rank &&
-        valueCompare(top.value, players[i].result.value)==0){
-        top.index.push(i);
+      } else if (top.rank == players[i].result.rank) {
+        //determine winner by rank and kickers
+        switch (players[i].result.rank) {
+          case 9: //Royal Flush: anyone with will split the pot
+            top.index.push(i);
+            break;
+          case 8: //Straight Flush: highest card wins, Tie: split the pot
+            if (top.value < players[i].result.value) {top.index = [i]; top.value = players[i].result.value; }
+            else if (top.value == players[i].result.value) { top.index.push(i); }
+            break;
+          case 7: //Four of a Kind: highest four of a kind wins, TieBreaker: highest kicker wins, Tie: split the pot
+            if (top.value < players[i].result.value) {top.index = [i]; top.value = players[i].result.value; }
+            else if (top.value == players[i].result.value) { top.index.push(i); }
+            break;
+          case 6: //Full House: highest three of a kind wins, TieBreaker: highest pair wins, Tie: split the pot
+            if (top.value < players[i].result.value) {top.index = [i]; top.value = players[i].result.value; top.value2 = 0; }
+            else if (top.value == players[i].result.value && top.value2 < players[i].result.value2) {top.index = [i]; top.value2 = players[i].result.kicker1; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2) { top.index.push(i); }
+            break;
+          case 5: //Flush: highest card wins, compare high cards to break tie. Tie: players have same flush different suits split the pot
+            if (top.value < players[i].result.value) { top.index = [i]; top.value = players[i].result.value; top.value2 = 0; top.value3 = 0; top.value4 = 0; top.value5 = 0; }
+            else if (top.value == players[i].result.value && top.value2 < players[i].result.value2) { top.value2 = players[i].result2; top.value3 = 0; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 < players[i].result.value3) { top.value3 = players[i].result3; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3 && top.value4 < players[i].result.value4) { top.value4 = players[i].result4; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3 && top.value4 == players[i].result.value4 && top.value5 < players[i].result.value5) { top.value5 = players[i].result5; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3 && top.value4 == players[i].result.value4 && top.value5 == players[i].result.value5) { top.index.push(i); }
+            break;
+          case 4: //Straight: highest card wins, Tie: split the pot
+            if (top.value < players[i].result.value) {top.index = [i]; top.value = players[i].result.value; top.value2 = 0; top.value3 = 0; top.value4 = 0; top.value5 = 0; }
+            else if (top.value == players[i].result.value) { top.index.push(i); }
+            break;
+          case 3: //Three of a Kind: highest three of a kind wins, TieBreaker: highest kicker wins, Tie: split the pot
+            if (top.value < players[i].result.value) { top.index = [i]; top.value = players[i].result.value; top.value2 = 0; top.value3 = 0; top.value4 = 0; top.value5 = 0; }
+            else if (top.value == players[i].result.value && top.value2 < players[i].result.value2) { top.value2 = players[i].result2; top.value3 = 0; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 < players[i].result.value3) { top.value3 = players[i].result3; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3) { top.value4 = 0; top.value5 = 0; top.index.push(i); }
+            break;
+          case 2: //Two Pair: highest pair wins, TieBreaker: highest pair wins, TieBreaker: highest kicker wins, Tie: split the pot
+            if (top.value < players[i].result.value) { top.index = [i]; top.value = players[i].result.value; top.value2 = 0; top.value3 = 0; top.value4 = 0; top.value5 = 0; }
+            else if (top.value == players[i].result.value && top.value2 < players[i].result.value2) { top.value2 = players[i].result2; top.value3 = 0; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 < players[i].result.value3) { top.value3 = players[i].result3; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3) { top.value4 = 0; top.value5 = 0; top.index.push(i); }
+            break;
+          case 1: //One Pair: highest pair wins, TieBreaker: highest kickers in sequence wins Tie: split the pot
+          if (top.value < players[i].result.value) { top.index = [i]; top.value = players[i].result.value; top.value2 = 0; top.value3 = 0; top.value4 = 0; top.value5 = 0; }
+            else if (top.value == players[i].result.value && top.value2 < players[i].result.value2) { top.value2 = players[i].result2; top.value3 = 0; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 < players[i].result.value3) { top.value3 = players[i].result3; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3 && top.value4 < players[i].result.value4) { top.value4 = players[i].result4; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3 && top.value4 == players[i].result.value4) { top.index.push(i); top.value5 = 0; }
+            break;
+          case 0: //High Card: highest card wins, TieBreaker: highest kickers in sequence wins, Tie: split the pot
+            if (top.value < players[i].result.value) { top.index = [i]; top.value = players[i].result.value; top.value2 = 0; top.value3 = 0; top.value4 = 0; top.value5 = 0; }
+            else if (top.value == players[i].result.value && top.value2 < players[i].result.value2) { top.value2 = players[i].result2; top.value3 = 0; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 < players[i].result.value3) { top.value3 = players[i].result3; top.value4 = 0; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3 && top.value4 < players[i].result.value4) { top.value4 = players[i].result4; top.value5 = 0; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3 && top.value4 == players[i].result.value4 && top.value5 < players[i].result.value5) { top.value5 = players[i].result5; top.index = [i]; }
+            else if (top.value == players[i].result.value && top.value2 == players[i].result.value2 && top.value3 == players[i].result.value3 && top.value4 == players[i].result.value4 && top.value5 == players[i].result.value5) { top.index.push(i); }
+            break;
+        }
       }
     }
     let totalWinBet = 0;
