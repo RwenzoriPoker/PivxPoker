@@ -1,0 +1,477 @@
+
+.congratulation {
+  font-family: "Montserrat";
+  font-size: clamp(36px, 0.6rem, 100px);
+  color: gold;
+  text-shadow: 3px 2px #735b13;
+}
+
+[class^=firework-] {
+  position: absolute;
+  width: 0.2rem;
+  height: 0.2rem;
+  border-radius: 50%;
+}
+
+.firework-1 {
+  -webkit-animation: firework-lg 1.2s both infinite;
+          animation: firework-lg 1.2s both infinite;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+  top: 70%;
+  left: 20%;
+}
+
+.firework-2 {
+  -webkit-animation: firework-sm 1.2s both infinite;
+          animation: firework-sm 1.2s both infinite;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+  top: 85%;
+  left: 85%;
+}
+
+.firework-3 {
+  -webkit-animation: firework-sm 1.2s both infinite;
+          animation: firework-sm 1.2s both infinite;
+  -webkit-animation-delay: 1.1s;
+          animation-delay: 1.1s;
+  top: 75%;
+  left: 65%;
+}
+
+.firework-4 {
+  -webkit-animation: firework-lg 1.2s both infinite;
+          animation: firework-lg 1.2s both infinite;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+  top: 25%;
+  left: 85%;
+}
+
+.firework-5 {
+  -webkit-animation: firework-sm 1.2s both infinite;
+          animation: firework-sm 1.2s both infinite;
+  -webkit-animation-delay: 0.9s;
+          animation-delay: 0.9s;
+  top: 80%;
+  left: 20%;
+}
+
+.firework-6 {
+  -webkit-animation: firework-md 1.2s both infinite;
+          animation: firework-md 1.2s both infinite;
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s;
+  top: 35%;
+  left: 35%;
+}
+
+.firework-7 {
+  -webkit-animation: firework-sm 1.2s both infinite;
+          animation: firework-sm 1.2s both infinite;
+  -webkit-animation-delay: 1.5s;
+          animation-delay: 1.5s;
+  top: 20%;
+  left: 60%;
+}
+
+.firework-8 {
+  -webkit-animation: firework-lg 1.2s both infinite;
+          animation: firework-lg 1.2s both infinite;
+  -webkit-animation-delay: 0.7s;
+          animation-delay: 0.7s;
+  top: 60%;
+  left: 25%;
+}
+
+.firework-9 {
+  -webkit-animation: firework-sm 1.2s both infinite;
+          animation: firework-sm 1.2s both infinite;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+  top: 25%;
+  left: 45%;
+}
+
+.firework-10 {
+  -webkit-animation: firework-lg 1.2s both infinite;
+          animation: firework-lg 1.2s both infinite;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+  top: 85%;
+  left: 35%;
+}
+
+.firework-11 {
+  -webkit-animation: firework-sm 1.2s both infinite;
+          animation: firework-sm 1.2s both infinite;
+  -webkit-animation-delay: 0.6s;
+          animation-delay: 0.6s;
+  top: 40%;
+  left: 60%;
+}
+
+.firework-12 {
+  -webkit-animation: firework-lg 1.2s both infinite;
+          animation: firework-lg 1.2s both infinite;
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s;
+  top: 20%;
+  left: 25%;
+}
+
+.firework-13 {
+  -webkit-animation: firework-sm 1.2s both infinite;
+          animation: firework-sm 1.2s both infinite;
+  -webkit-animation-delay: 0.6s;
+          animation-delay: 0.6s;
+  top: 40%;
+  left: 90%;
+}
+
+.firework-14 {
+  -webkit-animation: firework-md 1.2s both infinite;
+          animation: firework-md 1.2s both infinite;
+  -webkit-animation-delay: 1.5s;
+          animation-delay: 1.5s;
+  top: 90%;
+  left: 85%;
+}
+
+.firework-15 {
+  -webkit-animation: firework-md 1.2s both infinite;
+          animation: firework-md 1.2s both infinite;
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s;
+  top: 20%;
+  left: 25%;
+}
+
+@-webkit-keyframes firework-sm {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 70% {
+    opacity: 1;
+  }
+  100% {
+    box-shadow: -1rem 0rem 0 #fff, 1rem 0rem 0 #fff, 0rem -1rem 0 #fff, 0rem 1rem 0 #fff, 0.7rem -0.7rem 0 #fff, 0.7rem 0.7rem 0 #fff, -0.7rem -0.7rem 0 #fff, -0.7rem 0.7rem 0 #fff;
+  }
+}
+
+@keyframes firework-sm {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 70% {
+    opacity: 1;
+  }
+  100% {
+    box-shadow: -1rem 0rem 0 #fff, 1rem 0rem 0 #fff, 0rem -1rem 0 #fff, 0rem 1rem 0 #fff, 0.7rem -0.7rem 0 #fff, 0.7rem 0.7rem 0 #fff, -0.7rem -0.7rem 0 #fff, -0.7rem 0.7rem 0 #fff;
+  }
+}
+@-webkit-keyframes firework-md {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 70% {
+    opacity: 1;
+  }
+  100% {
+    box-shadow: -1.4rem 0rem 0 #fff, 1.4rem 0rem 0 #fff, 0rem -1.4rem 0 #fff, 0rem 1.4rem 0 #fff, 0.98rem -0.98rem 0 #fff, 0.98rem 0.98rem 0 #fff, -0.98rem -0.98rem 0 #fff, -0.98rem 0.98rem 0 #fff;
+  }
+}
+@keyframes firework-md {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 70% {
+    opacity: 1;
+  }
+  100% {
+    box-shadow: -1.4rem 0rem 0 #fff, 1.4rem 0rem 0 #fff, 0rem -1.4rem 0 #fff, 0rem 1.4rem 0 #fff, 0.98rem -0.98rem 0 #fff, 0.98rem 0.98rem 0 #fff, -0.98rem -0.98rem 0 #fff, -0.98rem 0.98rem 0 #fff;
+  }
+}
+@-webkit-keyframes firework-lg {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 70% {
+    opacity: 1;
+  }
+  100% {
+    box-shadow: -1.8rem 0rem 0 #fff, 1.8rem 0rem 0 #fff, 0rem -1.8rem 0 #fff, 0rem 1.8rem 0 #fff, 1.26rem -1.26rem 0 #fff, 1.26rem 1.26rem 0 #fff, -1.26rem -1.26rem 0 #fff, -1.26rem 1.26rem 0 #fff;
+  }
+}
+@keyframes firework-lg {
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 70% {
+    opacity: 1;
+  }
+  100% {
+    box-shadow: -1.8rem 0rem 0 #fff, 1.8rem 0rem 0 #fff, 0rem -1.8rem 0 #fff, 0rem 1.8rem 0 #fff, 1.26rem -1.26rem 0 #fff, 1.26rem 1.26rem 0 #fff, -1.26rem -1.26rem 0 #fff, -1.26rem 1.26rem 0 #fff;
+  }
+}
+
+.game-page {
+  color: red;
+  padding: 0px;
+  height:100%;
+}
+
+.menu-button {
+  width: 30px;
+  height: 28px;
+  background-color: #2a1b42;
+  border-radius: 3px;
+  margin: 5px;
+}
+
+.menu-icon {
+  margin: 3px;
+  height: 33px;
+  width: 36px;
+  cursor: pointer;
+  margin-top: 3px;
+  border-radius: 5px;
+  padding: -7px;
+}
+
+.menu-icon:active {
+  padding: 2px;
+}
+
+.poker-table {
+  width: 850px;
+  height: 450px;
+  margin-top: 3%;
+}
+
+.game-footer {
+  display: flex;
+  height: 191px;
+  bottom: 0px;
+  border-style: solid none none none;
+  position: absolute;
+  background: #151c27;
+}
+
+.game-chat {
+  width: 100%;
+  margin:0 0 0 0;
+  background: #130d1e;
+  padding: 6px;
+  height: 100%;
+  overflow: hidden;
+}
+.message-view::-webkit-scrollbar {
+  display: none;
+}
+.game-chat-input {
+}
+
+.message-view {
+  overflow-y: scroll;
+  height: 100%;
+}
+
+.right-actions {
+  width: 50%;
+  padding: 10px;
+}
+
+.btn-yellow {
+  width: 160px;
+  height: 55px;
+  border-radius: 6px;
+  margin: 3px;
+  font-size: 20px;
+  background: linear-gradient(
+    195deg,
+    #ebb105,
+    #ba7f0a 53%,
+    #b37a07,
+    #a56918 64%
+  );
+}
+
+.btn-yellow:active {
+  background: #a56918;
+}
+.btn-black {
+  width: 180px;
+  height: 70px;
+  border-radius: 6px;
+  margin: 3px;
+  font-size: 20px;
+  background: linear-gradient(195deg, #2d3746 53%, #2d3746, #262e3a 64%);
+}
+.btn-hide {
+  border-radius: 6px;
+
+  height: 30px;
+  font-size: 16px;
+  background: linear-gradient(195deg, #2d3746 53%, #2d3746, #262e3a 64%);
+}
+.btn-black:active {
+  background: #262e3a;
+}
+
+.users-on-board {
+  position: absolute;
+  cursor: pointer;
+}
+
+.eclips-table {
+  position: absolute;
+  width: 169%;
+  height: 63%;
+  clip-path: ellipse(24% 50%);
+  background: lightblue;
+  text-align: center;
+  right: -37%;
+}
+
+.left-side-users {
+  position: absolute;
+  background: red;
+  height: 400px;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  margin-top: 60px;
+  margin-left: 100px;
+}
+.right-side-users {
+  position: fixed;
+  background: red;
+  height: 400px;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  margin-top: 60px;
+  right: 20%;
+}
+
+
+
+.card-size {
+  height: 80px;
+  width: 60px;
+  padding: 2px;
+  cursor: pointer;
+}
+.card-size:hover {
+  padding: 0px;
+}
+
+.user-amount {
+  width: auto;
+  border-radius: 7px;
+}
+
+.chips-bet {
+  display: flex;
+  border: solid 0.5px rgba(255, 255, 255, 0.28);
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 1rem;
+  padding-right: 1rem;
+  height: 34px;
+  margin-right: 10px;
+  padding-bottom: 2.2rem;
+}
+
+.back-card {
+  width: 30px;
+  height: 37px;
+}
+
+.overlap-card {
+  position: absolute;
+  margin-top: -7px;
+  margin-left: -5px;
+}
+
+.closed-card {
+  top: 75px;
+  position: absolute;
+  right: 0px;
+}
+.choosen-card {
+  width: 45px;
+  height: 55px;
+  padding: 3px;
+}
+.choosen-card:hover {
+  padding: 0px;
+}
+
+.my-cards {
+}
+.my-cards div {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.bottom-user {
+  margin-top: 360px;
+}
+
+.top-user {
+  margin-top: -20px;
+}
+
+.footer-option {
+  position: absolute;
+  bottom: 200px;
+}
+@media (max-width: 767px) {
+  .poker-table {
+    transform: rotate(90deg);
+  }
+  .footer-container {
+    /* transform: translate(0%, -525px) rotate(90deg);
+    transform-origin: left;
+    height: 100%; */
+
+    /* transform: rotate(90deg);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 200px;
+    width: 100vh;
+    background-color: red; */
+
+    width: 100vh;
+    height: 60px;
+    transform-origin: top left;
+    position: absolute;
+    left: 60px;
+    top: 0;
+    transform: rotate(90deg);
+  }
+
+  .header-icons {
+    /* height: 100%;
+    width: 150px;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    transform: rotate(90deg); */
+
+    width: 100vh;
+    height: 60px;
+    transform-origin: top right;
+    position: absolute;
+    right: 60px;
+    top: 0;
+    transform: rotate(270deg);
+  }
+}
+
+

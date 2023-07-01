@@ -1,0 +1,165 @@
+.tabs {
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-gap: 0.5rem;
+}
+
+
+.table-wrapper {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+}
+
+
+
+.table-row {
+   display: flex;
+   background-color: #2a1b42;
+   color: #ffffff;
+   justify-content: flex-start;
+   height: 42px;
+   margin: 0.2px 0 4.2px;
+}
+
+.body-row {
+   background: transparent;
+   color: #ffffff;
+   cursor: pointer;
+
+}
+
+.body-row:hover {
+   background: #ffff;
+}
+
+.tabel-item {
+   text-transform: uppercase;
+   font-size: 0.75rem;
+   padding: 0.75rem 0;
+   font-family: Montserrat;
+   text-align: center;
+   width: 20%;
+   color: white;
+}
+
+.head-item {
+   color: #ffffff;
+   background: #662D91;
+   box-shadow: 2px 3px 1px rgba(0,0,0,0.4);
+   text-transform: uppercase;
+   width: 100%;
+   text-align: center;
+   cursor:pointer
+}
+
+.lobby-details {
+   display: flex;
+   flex-direction: column;
+   width: 25%;
+   height: 100%;
+   align-items: center;
+}
+
+.lobby-details-wrapper {
+   display: flex;
+   flex-direction: column;
+   /* padding: 1rem 2rem; */
+   line-height: 2.5;
+}
+
+.lobby-details-row {
+   display: flex;
+   justify-content: space-between;
+}
+
+.lobby {
+   display: flex;
+   width: 100%;
+}
+
+.tournament-details {
+   padding: 10px
+}
+
+.tournament-details label {
+   color: #ffb941;
+   margin-right: 10px
+}
+
+.theme-header {
+   display: flex;
+   justify-content: space-around;
+   background: #4f545d;
+}
+
+.border-none {
+   border: none;
+}
+
+.them-tab {
+
+   background: linear-gradient(to bottom left, #24272d, #262d37);
+   padding: 12px;
+   cursor: pointer;
+   margin-right: 5px;
+
+}
+
+.tab-active {
+   background: linear-gradient(to bottom left, #49515e, #262d37);
+}
+
+
+
+.tournament-card{
+   height:100%;
+   overflow:scroll
+}
+ 
+.tournament-card::-webkit-scrollbar {
+   width: 16px;
+   background-color: #4f545d;
+   border-radius: 10px;
+}
+
+
+.tournament-card::-webkit-scrollbar-thumb {
+   background-color: white;
+}
+
+
+.ml90 {
+   margin-left: 90%;
+}
+
+.w150 {
+   width: 150px
+}
+
+.toggle-popup{
+   background: #2a1b42;
+   width: auto;
+   right: 5px;
+   margin-top: 40px;
+   position: absolute;
+   top: 0;
+}
+
+.toggle-popup div{   
+   padding: 9px 16px 4px 16px;
+   border: #6d7a7f;
+   border-style: none  none solid none;
+   border-width: 1px;
+}
+ 
+.toggle-popup div:hover{
+   background: #130d1e;
+   cursor: pointer;
+}
+.toggle-popup div:active{
+   background: #130d1e;
+   cursor: pointer;
+}
+
+
