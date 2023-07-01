@@ -1,6 +1,0 @@
-# HTTrack Website Copier Cookie File
-# This file format is compatible with Netscape cookies
-api.blockchain.poker	TRUE	/	FALSE	1999999999	AWSALB	kL0HaRkDPYWcWmqAnTjzXZYC6KPsQO3Stwzz05+PY9voSnvVbqQiQNenggWqZzZGoYwR3caG/hZ35HuNGRN9lqbOQ1YfHhKbhpuZ1ubCEILj+OvWYUgW+ji0RhJh
-api.blockchain.poker	TRUE	/	FALSE	1999999999	AWSALBCORS	kL0HaRkDPYWcWmqAnTjzXZYC6KPsQO3Stwzz05+PY9voSnvVbqQiQNenggWqZzZGoYwR3caG/hZ35HuNGRN9lqbOQ1YfHhKbhpuZ1ubCEILj+OvWYUgW+ji0RhJh
-api.blockchain.poker	TRUE	/	FALSE	1999999999	SameSite	None
-
