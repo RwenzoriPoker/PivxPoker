@@ -1,0 +1,518 @@
+<?php
+//force ssl
+if($_SERVER["HTTPS"] != "on")
+{
+    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+    exit();
+}
+?>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <!--import bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <title>PIVX.Poker - Coming Soon |</title>
+  </head>
+  <body>
+
+    <div class="container-fluid home-hero" style="padding:0px;">
+
+      <nav class="navbar navbar-expand-lg sticky-top navbar-light navbarSpecial">
+        <div class="container">
+          <a href="/"><img id="navlogo" class="navbar-brand noselect" src='images/logo.png' alt="PIVX" style='vertical-align: middle;width:150px;display:inline; margin-left:-50px;'></a>
+          <button id="navbarToggler" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+            </span>
+          </button>
+          <div class="collapse navbar-collapse noselect" id="navbarNav">
+            <ul class="navbar-nav mr-auto" style="cursor: pointer;">
+              <li class="nav-item">
+                <a id="home-nav" div-section="comingsoon" class="nav-link tablinks nav-link-tabs">Play Now</a>
+              </li>
+
+              <li class="nav-item">
+                <a id="home-learn" div-section="howto" class="nav-link tablinks nav-link-tabs">Learn to Play</a>
+              </li>
+
+              <li class="nav-item">
+                <a id="home-community" div-section="community" class="nav-link tablinks nav-link-tabs">Community</a>
+              </li>
+
+              <li class="nav-item">
+                <a id="home-exchanges" div-section="findpivx" class="nav-link tablinks nav-link-tabs">Exchanges
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a id="home-exchanges" div-section="terms" class="nav-link tablinks nav-link-tabs">Terms
+                </a>
+              </li>
+            </ul>
+            <div class="form-inline ms-auto my-2 my-lg-0">
+              <ul class="navbar-nav mr-auto" style="cursor: pointer;">
+                <li class="nav-item">
+                  <a class="nav-link tablinks" href="javascript:;" style='color:#b088ff'>
+                    <i class="fas fa-moon" id="mode-switch"></i>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link tablinks" href="https://pivx.org/proposals" target="_blank" id='Network' style='color:#b088ff'>
+                      <b>Proposal:</b> Vote here
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link tablinks" href="javascript:;" id='Debug' style='color:#b088ff'>
+                      <b>Status:</b> In development
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+
+      <section id="comingsoon" class="col-md-12 float-left light-to-dark-to-light-pattern-bkg section-div" style="display:none;">
+
+        <div class="col-md-12 title-section float-left rm-pd home-counter-section" style="padding:0px;">
+          <center>
+            <h3 class="pivx-bold-title"><span>Play Now</span>PIVX Poker!</h3>
+            <h4 class="t-t-light t-white">COMING SOON</h4>
+
+            <div class="col-md-12" style="padding:0px;">
+              <div class="button-zone" style="margin-top:20px;">
+                  <a class="buttoni purple" href="https://discord.gg/QDRGV7JAZj">
+                    <span class="buttoni-icon"><i class="fab fa-discord"></i></span>
+                    <span class="buttoni-text">Join Discord</span>
+                    <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                  </a>
+              </div>
+              <img src="images/chipsb.png" style="width: 527px; position: absolute; margin-left: -51px;">
+            </div>
+          </center>
+        </div>
+
+      </section >
+
+      <section id="home"  class="col-md-12 float-left original-bg-color section-div" aria-labelledby="home-tab">
+        <div class="container" style="height:100%;">
+
+          <div class="col-md-6" style="padding:0px; float:left; height:100%;">
+            <div class="flex-on-center">
+              <div class="col-md-12">
+
+                <div class="col-md-12" style="padding:0px; float:left;">
+                  <h3 class="pivx-bold-title" style="color: white; font-weight: 900; font-size: 81px; line-height: 84px;">WELCOME TO<BR> PIVX POKER</h3>
+                  <h5 style="color:white;">The <b>first ever</b> DAO <b>poker room</b></h5>
+                </div>
+
+                <div class="col-md-12" style="padding:0px;  float:left; ">
+                  <div class="button-zone" style="margin-top:20px; height:100%;">
+                      <a class="buttoni purple" href="https://discord.com/invite/QDRGV7JAZj">
+                        <span class="buttoni-text">PLAY NOW</span>
+                        <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                      </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 hide-col-mobile" style="padding:0px; float:left; height:100%;">
+            <div class="flex-on-center">
+              <img src="images/chipsb.png" style="width: 40vw; max-width: 800px;">
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <section id="howto" class="col-md-12 float-left original-bg-color section-div" style="display:none;">
+        <div class="container" style="height:100%;">
+          <div class="col-md-6" style="padding:0px; float:left; height:100%;">
+            <div class="flex-on-center">
+              <div class="col-md-12">
+                <div class="col-md-12" style="padding: 0px; float: left; overflow-y: auto; padding-right: 21px;">
+                  <h5 style="color:white;">How to</h5>
+                  <h3 class="pivx-bold-title" style="color: white; font-weight: 900; font-size: 55px; line-height: 62px;">PLAY TEXAS HOLDEM</h3>
+                  <p style="color:white;">
+                  Poker is a sport meant to be enjoyed by everyone whether for fun want to play with friends or as aprofession. One can play online poker for free or choose the highest stakes available from his/herdesktop, laptop, tablet and even phone. Everyone can find a seat at a poker table whether a beginner or an experienced gamer.</p>
+
+                  <p style="color:white;">
+                  The rules of the game are similar whether one is playing online or in person. Differences can be noted with the online version in that it is faster and more accessible as you can find games anytime at poker sites. For a beginner, you will have to create an account which requires a minimal age of 18. You may start by playing free play money games to gain experience then deposit money and feel the real poker experience.</p>
+
+ 
+                  <p style="color:white;">
+                  If you want to learn more about it you can do it <a href="">clicking here</a>.</p>
+
+                </div>
+
+                <div class="col-md-12" style="padding:0px;  float:left; ">
+                  <div class="button-zone" style="margin-top:20px; height:100%;">
+                      <a class="buttoni purple" href="https://discord.com/invite/QDRGV7JAZj">
+                        <span class="buttoni-text">PLAY NOW</span>
+                        <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                      </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 hide-col-mobile" style="padding:0px; float:left; height:100%;" style="display:none;">
+            <div class="flex-on-center">
+              <img src="images/HOW_TO_LEARN.svg" style="width: 29vw; margin-left: 113px; max-width: 544px;">
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="findpivx" class="col-md-12 float-left original-bg-color section-div" style="display:none; height: unset !important;">
+        <div class="container" style="height:100%;">
+          <div class="col-md-12" style="padding:0px; float:left; height:100%;">
+            <div class="flex-on-center">
+              <div class="col-md-12" style="margin-top: 10vh;">
+                  <h5 style="color:white;">Where to</h5>
+                  <h3 class="pivx-bold-title" style="color: white; font-weight: 900; font-size: 55px; line-height: 62px; margin-bottom: 25px;">FIND PIVX?</h3>
+                  <div style="text-align: center; background: #201032; color: white; float:left;   border-right: 3px solid #9421ff; margin-bottom: 100px;width: 100%;border-left: 3px solid #9421ff; border-radius: 15px;">
+                    <div class="external-service-box">
+                        <div class="external-service-content slightly-rounded-box t-center" style="padding:29px;">
+                            <div class="external-service-logo">
+                                <a target="_blank" rel="noopener" class="keychainify-checked" href="https://stakecube.net/app/exchange/pivx_btc?layout=pro">
+                                    <img style="width:400px;" alt="StakeCube" src="images/exchanges/logo_stakecube.svg">
+                                </a>
+                            </div>
+                            <div class="external-service-info">
+                                <p class="t-t-almost t-white" style="margin-top: 25px;">Buy, Stake, Earn PIVX with the ultimate all-in-one Trading &amp; Passive Income platform!<br><br>A proud supporter &amp; backer of PIVX.poker</p>
+                            </div>
+                            <div class="external-service-button" style="margin-top: 50px;">
+                                <a class="buttoni purple keychainify-checked" target="_blank" rel="noopener" href="https://stakecube.net/app/exchange/pivx_btc?layout=pro">
+                                    <span class="buttoni-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M24 15.573l3 3V23.5a3.504 3.504 0 01-3.5 3.5h-15A3.504 3.504 0 015 23.5v-15A3.504 3.504 0 018.5 5h4.928l3 3H8.5a.506.506 0 00-.5.5v15a.506.506 0 00.5.5h15a.506.506 0 00.5-.5zm-4.18-7.01l-6.936 9.187a.5.5 0 00.046.655l.665.665a.5.5 0 00.655.046l9.186-6.936 2.126 2.126a.5.5 0 00.847-.275l1.483-9.351a.5.5 0 00-.572-.572L17.97 5.59a.5.5 0 00-.275.847z"></path></svg></span>
+                                    <span class="buttoni-text">GO TO</span>
+                                    <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                                </a>
+                            </div>
+                            <p style="opacity: 0.2;font-size: x-small;text-align: right;position: relative;bottom: -20px; cursor: default;">Sponsored</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding:0px; float:left; opacity: 0.75;">
+
+                  <div class="col-md-3 almostblack-a-bkg" style="text-align: center; background: #201032; color: white; float:left;   border-right: 3px solid #9421ff; min-height:350px;">
+                    <div class="external-service-box">
+                        <div class="external-service-content slightly-rounded-box t-center almostblack-a-bkg" style="padding:29px;">
+                            <div class="external-service-logo">
+                                <a href="https://accounts.binance.cc/en/register?ref=54341362" target="_blank" rel="noopener">
+                                    <img src="images/exchanges/logo_binance.svg" style="width:150px; " alt="Binance">
+                                </a>
+                            </div>
+                            <div class="external-service-info">
+                                <p class="t-t-almost t-white" style="    margin-top: 20px;">Buy & sell Crypto in minutes. Powerful crypto trading platform for those who mean business.</p>
+                            </div>
+                            <div class="external-service-button">
+                                <a class="buttoni purple" href="https://accounts.binance.cc/en/register?ref=54341362" target="_blank" rel="noopener">
+                                    <span class="buttoni-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M24 15.573l3 3V23.5a3.504 3.504 0 01-3.5 3.5h-15A3.504 3.504 0 015 23.5v-15A3.504 3.504 0 018.5 5h4.928l3 3H8.5a.506.506 0 00-.5.5v15a.506.506 0 00.5.5h15a.506.506 0 00.5-.5zm-4.18-7.01l-6.936 9.187a.5.5 0 00.046.655l.665.665a.5.5 0 00.655.046l9.186-6.936 2.126 2.126a.5.5 0 00.847-.275l1.483-9.351a.5.5 0 00-.572-.572L17.97 5.59a.5.5 0 00-.275.847z"></path></svg></span>
+                                    <span class="buttoni-text">GO TO</span>
+                                    <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 almostblack-a-bkg" style="text-align: center; background: #201032; color: white; float:left; min-height:350px; border-right: 3px solid #9421ff;">
+                    <div class="external-service-box">
+                        <div class="external-service-content slightly-rounded-box t-center almostblack-a-bkg" style="padding:29px;">
+                            <div class="external-service-logo">
+                                <a href="https://kucoin.com" target="_blank" rel="noopener">
+                                    <img src="images/exchanges/logo_kucoin.svg" style="width:150px;" alt="KuCoin">
+                                </a>
+                            </div>
+                            <div class="external-service-info">
+                                <p class="t-t-almost t-white"  style="    margin-top: 20px;">Buy & sell Crypto in minutes. Powerful crypto trading platform for those who mean business.</p>
+                            </div>
+                            <div class="external-service-button">
+                                <a class="buttoni purple" href="https://kucoin.com" target="_blank" rel="noopener">
+                                    <span class="buttoni-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M24 15.573l3 3V23.5a3.504 3.504 0 01-3.5 3.5h-15A3.504 3.504 0 015 23.5v-15A3.504 3.504 0 018.5 5h4.928l3 3H8.5a.506.506 0 00-.5.5v15a.506.506 0 00.5.5h15a.506.506 0 00.5-.5zm-4.18-7.01l-6.936 9.187a.5.5 0 00.046.655l.665.665a.5.5 0 00.655.046l9.186-6.936 2.126 2.126a.5.5 0 00.847-.275l1.483-9.351a.5.5 0 00-.572-.572L17.97 5.59a.5.5 0 00-.275.847z"></path></svg></span>
+                                    <span class="buttoni-text">GO TO</span>
+                                    <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 almostblack-a-bkg" style="text-align: center; color: white; float:left;   background: #201032; border-right: 3px solid #9421ff; min-height:350px;">
+                    <div class="external-service-box">
+                        <div class="external-service-content slightly-rounded-box t-center almostblack-a-bkg" style="padding:29px;">
+                            <div class="external-service-logo">
+                                <a href="https://www.coinex.com/exchange/pivx-usdt" target="_blank" rel="noopener">
+                                    <img src="images/exchanges/logo_coinex.svg" style="width:138px;" alt="CoinEx">
+                                </a>
+                            </div>
+                            <div class="external-service-info">
+                                <p class="t-t-almost t-white"  style="    margin-top: 20px;">Buy & sell Crypto in minutes. Powerful crypto trading platform for those who mean business.</p>
+                            </div>
+                            <div class="external-service-button">
+                                <a class="buttoni purple" href="https://www.coinex.com/exchange/pivx-usdt" target="_blank" rel="noopener">
+                                    <span class="buttoni-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M24 15.573l3 3V23.5a3.504 3.504 0 01-3.5 3.5h-15A3.504 3.504 0 015 23.5v-15A3.504 3.504 0 018.5 5h4.928l3 3H8.5a.506.506 0 00-.5.5v15a.506.506 0 00.5.5h15a.506.506 0 00.5-.5zm-4.18-7.01l-6.936 9.187a.5.5 0 00.046.655l.665.665a.5.5 0 00.655.046l9.186-6.936 2.126 2.126a.5.5 0 00.847-.275l1.483-9.351a.5.5 0 00-.572-.572L17.97 5.59a.5.5 0 00-.275.847z"></path></svg></span>
+                                    <span class="buttoni-text">GO TO</span>
+                                    <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3 almostblack-a-bkg" style="text-align: center; background: #201032; color: white; float:left; min-height:350px; border-right: 3px solid #9421ff; ">
+                    <div class="external-service-box">
+                        <div class="external-service-content slightly-rounded-box t-center almostblack-a-bkg" style="padding:29px;">
+                            <div class="external-service-logo">
+                                <a href="https://global.bittrex.com/Market/Index?MarketName=BTC-PIVX" target="_blank" rel="noopener">
+                                    <img src="images/exchanges/logo_bittrex.svg" style="width:150px;" alt="Bittrex">
+                                </a>
+                            </div>
+                            <div class="external-service-info">
+                                <p class="t-t-almost t-white" style="    margin-top: 20px;">Buy & sell Crypto in minutes. Powerful crypto trading platform for those who mean business.</p>
+                            </div>
+                            <div class="external-service-button">
+                                <a class="buttoni purple" href="https://global.bittrex.com/Market/Index?MarketName=BTC-PIVX" target="_blank" rel="noopener">
+                                    <span class="buttoni-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M24 15.573l3 3V23.5a3.504 3.504 0 01-3.5 3.5h-15A3.504 3.504 0 015 23.5v-15A3.504 3.504 0 018.5 5h4.928l3 3H8.5a.506.506 0 00-.5.5v15a.506.506 0 00.5.5h15a.506.506 0 00.5-.5zm-4.18-7.01l-6.936 9.187a.5.5 0 00.046.655l.665.665a.5.5 0 00.655.046l9.186-6.936 2.126 2.126a.5.5 0 00.847-.275l1.483-9.351a.5.5 0 00-.572-.572L17.97 5.59a.5.5 0 00-.275.847z"></path></svg></span>
+                                    <span class="buttoni-text">GO TO</span>
+                                    <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+
+               
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6" style="padding:0px; float:left; height:100%; display:none;">
+            <div class="flex-on-center">
+              <img src="images/FIND_PIVX.svg" style="width: 29vw; margin-left: 113px; max-width: 544px;">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="community" class="col-md-12 float-left original-bg-color section-div" style="display:none;">
+        <div class="container" style="height:100%;">
+          <div class="col-md-6" style="padding:0px; float:left; height:100%;">
+            <div class="flex-on-center">
+              <div class="col-md-12">
+                <div class="col-md-12" style="padding:0px; float:left;">
+                  <h5 style="color:white;">Welcome to the</h5>
+                  <h3 class="pivx-bold-title" style="color: white; font-weight: 900; font-size: 55px; line-height: 62px;">WORLD'S FIRST DAO</br> POKER ROOM</h3>
+                  <p style="color:white;">Come chat on <b>Discord</b>.</p>
+                </div>
+
+                <div class="col-md-6" style="padding:0px;  float:left; ">
+                  <div class="button-zone" style="margin-top:20px; height:100%;">
+                      <a class="buttoni purple" href="https://discord.gg/QDRGV7JAZj">
+                        <span class="buttoni-icon"><i class="fab fa-discord"></i></span>
+                        <span class="buttoni-text">DISCORD</span>
+                        <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                      </a>
+                  </div>
+                </div>
+
+                <div class="col-md-6" style="padding:0px;  float:left; ">
+                  <div class="button-zone" style="margin-top:20px; height:100%;">
+                      <a class="buttoni purple" href="https://github.com/PIVX-Project/PIVX">
+                        <span class="buttoni-icon"><i class="fab fa-github"></i></span>
+                        <span class="buttoni-text">GITHUB</span>
+                        <span class="buttoni-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M23.328 16.707L13.121 26.914a.5.5 0 01-.707 0l-2.828-2.828a.5.5 0 010-.707L16.964 16 9.586 8.621a.5.5 0 010-.707l2.828-2.828a.5.5 0 01.707 0l10.207 10.207a1 1 0 010 1.414z"></path></svg></span>
+                      </a>
+                  </div>
+                </div>
+
+               
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 hide-col-mobile" style="padding:0px; float:left; height:100%;">
+            <div class="flex-on-center">
+              <img src="images/COMMUNITY.png" style="width: 39vw; margin-left: 113px; max-width: 644px;">
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <section id="terms" class="col-md-12 float-left section-div" style="display:none;">
+        <div class="original-bg-color col-md-12" style="float: left;">
+          <div class="container" style="height:100%;">
+            <div class="col-md-12" style="padding:0px; float:left; height:100%;">
+              <div class="flex-on-center">
+                <div class="col-md-12">
+                  <div class="col-md-12" style="padding: 0px; float: left; margin-top: 31px; padding-bottom: 24px;">
+                    <h5 style="color:white;">PIVX POKER</h5>
+                    <h3 class="pivx-bold-title" style="color: white; font-weight: 900; font-size: 55px; line-height: 62px;">TERMS OF SERVICE</h3>
+                  </div>
+
+                  <div class="col-md-12" style="padding:0px;  float:left; ">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-12" style="float: left;">
+          <div class="container" style="color:white; margin-top: 41px;">
+<p>These terms and conditions of use(agreement) set out the terms upon which you may use PIVX.poker and should be read by you in their entirety before your use of this site. By clicking the &ldquo; I agree&rdquo; button where provided, you consent to the terms and conditions set forth in this agreement.</p>
+<ul>
+<li>GRANT OF LICENSE
+<ul>
+<li>In consideration of the terms and conditions contained herein, PIVX poker grants the user a non-exclusive, personal and non-transferable right to use the service on your personal computer or other device that accesses the internet in order to access the games described on this website.</li>
+<li>The service is limited to use by; (i) individuals under the age of 18, (ii) individuals under the legal age of maturity in their jurisdiction and (iii) individuals accessing the service from jurisdictions from which it is illegal to do so. PIVX.poker has no ability to verify the legality of the service in each jurisdiction and it is the user&rsquo;s responsibility to ensure their use of the service is lawful.</li>
+<li>poker and its licensers are the sole holders of all rights in and to the service and code, structure and organization, including copy rights, trade secretes and other rights. One may not, within the limits prescribed by applicable laws: (i) copy, distribute, publish, reverse engineer, decompile, modify or translate the website (ii) use the service in a manner prohibited by applicable laws (with reference to &ldquo;unauthorized use&rdquo;)</li>
+<li>The term PIVX.poker, its domain names and any other trademarks or service marks used by PIVX.poker as part of the service are solely owned by PIVX.poker All content on the website, including but not limited to the images, graphics, photographs, animations, video, music, audio and text (the site content) belongs to PIVX.poker or is licensed to use by a third party and is protected by copy rights or other rights. You therefore agree that by using this site, you obtain no rights on the site&rsquo;s content. PIVX.poker written consent will be required in case you need to use any of the site&rsquo;s property.</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>NO WARRANTIES</li>
+</ul>
+<p>2.1 PIVX.poker disclaims any warranties expressed or implied, in connection with the service which is provided to you and we provide no warranty or representation whatsoever regarding its quality, fitness, completeness or accuracy</p>
+<p>2.2 regardless of our efforts we make no warranty that our service will be uninterrupted, timely or error free or that defects will be corrected.</p>
+<p>&nbsp;</p>
+<ul>
+<li>AUTHORITY</li>
+</ul>
+<p>The operator retains authority to modify this agreement and thus amend this agreement between you and PIVX.poker at any time with or without notice including but not limited to maintenance operations and closing of the service.</p>
+<ul>
+<li>BREACH</li>
+</ul>
+<p>4.1 Without prejudice to any other rights, if a user breaches in whole or part any provision contained herein, PIVX.poker reserves the right to take such action as it sees fit, including terminating this agreement or any other agreement in place with user and or taking legal action against the user.</p>
+<p>4.2 You agree to defend and hold harmless PIVX.poker and its shareholders, directors, agents and employees from and against all claims, damages, losses, costs and expenses including legal fees and any other charges that may arise as a result of; (i) Your breach of this agreement in whole or in part (ii) violation by you of any law or third-party rights (iii) use by you of this service</p>
+<p>&nbsp;</p>
+<ul>
+<li>LIMITATION OF LIABILITY</li>
+</ul>
+<p>&nbsp;Under no circumstances, including negligence, shall PIVX.poker be liable for any special incidental, direct, indirect or consequential damages whatsoever (including and without limitation to damages for loss of business profits, business interruption, loss of business information or any other pecuniary loss) arising out of the use or misuse of the service even if PIVX.poker had prior knowledge to it.</p>
+<p>&nbsp;</p>
+<ul>
+<li>DISPUTES</li>
+</ul>
+<p>If you wish to make any complains or suggestions, you can contact the customer support team via the feedback form.</p>
+<p>&nbsp;</p>
+<ul>
+<li>AMENDMENT</li>
+</ul>
+<p>PIVX.poker reserves the right to update this agreement or any part thereof and you will be bound by such amended agreement upon posting. We therefore encourage you to check on the terms and conditions contained in the version of the agreement in force at such a time. Your continued use of the service shall be deemed to attest to your agreement on any amendments to the agreement.</p>
+<ul>
+<li>SEVERABILITY</li>
+</ul>
+<p>If a provision of this agreement is or becomes illegal, invalid or unenforceable in any jurisdiction, that shall not affect the validity or enforceability in that jurisdiction of any other provision hereof or the validity in other jurisdictions.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<ul>
+<li>ASSIGNMENT</li>
+</ul>
+<p>PIVX.poker reserves the right to assign this agreement, in whole or in part, at any time without notice. The user may not assign any of his/her rights or obligations under this agreement.</p>
+<p>&nbsp;</p>
+<ul>
+<li>CHEATING</li>
+</ul>
+<p>It&rsquo;s a violation of this agreement to; (i) Access the service from multiple accounts or concurrently (ii) Access the service while running any software which plays without human intervention or reduces the requirement of human playing (iii) communicate with another player at the same table as you through a channel other than the provided chat function (iv) Intentionally lose a hand in order to transfer chips to another player (v) Leverage any known or unknown exploits that may give the player an unfair advantage in play.</p>
+<p>PIVX.poker reserves any right to permanently revoke access to accounts caught in violation of these rules. In the event that we suspect that a player has been in any practices outlined in this section, or any other practices which we deem to be unfair or fraudulent, we reserve a right to revoke access to their accounts and permanently withhold available funds from within such accounts. No player has the right to require us to take any other steps against players suspected of cheating, scripting or any other form of unfair behavior. If a player gets cheated on when using the service, we shall only refund the amounts lost by the player as a result of being cheated in the event that we can locate the cheating account and access the funds in question. In the event that more than one player is affected by cheating and we can locate the account, the remaining funds in the cheating account will be distributed on a pro rata basis in accordance with the loss of each affected player.</p>
+<p>&nbsp;</p>
+<ul>
+<li>ABUSE</li>
+</ul>
+<p>Abusing the service as well as abusing players using the service is strictly prohibited. PIVX poker reserves right to revoke access to accounts of players caught repeatedly harassing others.</p>
+<ul>
+<li>FORFEITURE AND ACCOUNT CLOSURE</li>
+</ul>
+<p>We reserve the right to terminate these agreements, withhold your account balance, suspend your account and recover from such account the amount of any affected pay-outs and winnings if; (i) You are in breach of any of these agreements (ii) We have reasonable suspicion that you have engaged in any cheating activity (iii) We become aware that you have used or attempted to use the service for any purposes of fraud or improper activity.</p>
+<ul>
+<li>ERRORS</li>
+</ul>
+<p>You must inform us as soon as you become aware of any errors in respect to your account or any calculations with respect to any bet you have placed or any currency conversion. In the event of such error or any system failure or game error that results to errors in fees, bonuses or payout, we will seek to place all parties directly affected by such errors in the position they were before the error occurred. We reserve the right to declare any bets that were subject to the error null and void and take any money from your account relating to the relevant bet. If there are insufficient funds in your account, we may demand that you pay us the relevant outstanding amount relating to these bets.</p>
+<ul>
+<li>USER GENERATED CONTENT</li>
+</ul>
+<p>15.1 You may upload or otherwise contribute content for the purposes both normal play and game sponsorship on the service which may include pictures, logos, texts messages, names and other types of content (user content)</p>
+<p>15.2 You promise that, with respect to any user content you post on the service, (a) You own or have the right to post such user content (b) such user content, or its use by the service as contemplated by the agreements or any other rights set forth within the applicable law</p>
+<p>15.3 The service may, but has no obligation to monitor, review, or edit user content. In all cases the service reserves the right to remove or disable access to user content for any or no reason. The service may take these actions without prior notification to you or any third party.</p>
+<p>15.4 You are solely responsible for all the user content that you post and the service is not responsible for user content nor does it endorse any opinion contained in any user content.</p>
+<p>16) MISCELLANEOUS</p>
+<p>16.1 Nothing in this agreement shall create or confer any rights or benefits in favor of any third parties not party to this agreement other than with affiliate of PIVX.poker.</p>
+<p>16.2 This agreement constitutes the entire understanding between you and us regarding the service and supersedes any prior agreement, understanding or arrangement between you and us.</p>         
+            </div>
+        </div>
+      </section>
+
+
+
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+      $( ".nav-link-tabs" ).click(function() {
+        var div_id = $(this).attr( "div-section" );
+        $(".section-div").slideUp("slow");
+        $("#"+div_id).slideDown("slow")
+      });
+
+      $( "#mode-switch" ).click(function() {
+
+        var classList = document.getElementById("mode-switch").classList[1];
+        console.log(classList)
+
+        if(classList == "fa-sun") {
+          $(this).removeClass("fa-sun");
+          $(this).addClass("fa-moon");
+          $(".section-div").removeClass("light-to-dark-to-light-pattern-bkg");
+          $(".section-div").addClass("original-bg-color");
+          $(".navbar").removeClass("light-to-dark-to-light-pattern-bkg");
+         }
+
+         if(classList == "fa-moon") {
+          $(this).removeClass("fa-moon");
+          $(this).addClass("fa-sun");
+          $(".section-div").removeClass("original-bg-color");
+          $(".section-div").addClass("light-to-dark-to-light-pattern-bkg");
+          $(".navbar").addClass("light-to-dark-to-light-pattern-bkg");
+         }
+
+      });
+
+    </script>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+  </body>
+</html>
