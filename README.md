@@ -1,51 +1,14 @@
-# INSTALLATION
-Download PIVX core wallet (https://github.com/PIVX-Project/PIVX/releases)
+admin-page
+    A backend command system that allows users with permission to log into a dashboard for seeing nosql data
 
-Install pivx core wallet by untar/unzipping the file and running the install-params file
+pivxPoker
+    The backend system that controls poker
 
-run `/bin/pivxd -daemon`
+pivxpokerfrontend
+    The frontend system that users play on. You need to build it then add it to the pivxPoker/build for it to work
 
-(set up a restarting instance with systemd https://docs.pivx.org/wallets/pivx-core-wallet/pivx-as-a-service-linux)
+landingpage
+    This is the landing page that a user get too they first go to the website. 
+    currently the "new poker" folder is what is being used
 
-create a file in ~/.pivx/pivx.conf containing the following:
-**PLEASE CHANGE THE RPCUSER AND PASSWORD ON YOUR VERSION IT ALSO NEEDS TO BE CHANGE IN THE .ENV FILE**
-
-```               
-zmqpubrawtx=tcp://127.0.0.1:28332 
-testnet
-walletnotify 
-rpcuser=root
-rpcpassword=password
-rpcallowip=127.0.0.1
-server=1
-daemon=1
-maxconnections=256
-testnet=1
-server=1
-par=1
-rpcbind=127.0.0.1
-rpcport=3335
-rpcclienttimeout=30
-rpcthreads=5
-rpcworkqueue=1000
-paytxfee=.01
-staking=0
-enableaccounts=1
-```
-https://www.mongodb.com/docs/manual/administration/install-on-linux/
-
-install nodejs (19 recommended)
-https://github.com/nodesource/distributions/blob/master/README.md
-
-```
-sudo apt-get install build-essential
-sudo apt install node-pre-gyp
-```
-`npm i`
-
-Once your pivx Daemon syncs restart it so that it is using the settings from the config file
-
-# Running it
-`node index.js`
-
-Using PM2 can help with reliability 
+A reverse proxy is required to make sure everything is routed up correct.
