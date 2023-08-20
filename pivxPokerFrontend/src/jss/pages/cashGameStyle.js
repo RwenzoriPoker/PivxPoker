@@ -134,7 +134,7 @@ const lobbyStyle = (theme) => ({
   },
   table_pad: {
     position: "relative",
-    height: "calc(100% - 100px)",
+    height: "calc(100% - 150px)",
     "& .users-on-board": {
       zIndex: '1',
       "&.stand":{
@@ -226,9 +226,12 @@ const lobbyStyle = (theme) => ({
     },
   },
   control_pad: {
+    paddingTop: "50px",
     position: "relative",
-    bottom: "35px",
-    height: "40px",
+    width:"90%",
+    paddingLeft:"5%",
+    bottom: "50px",
+    height: "50px",
     flexFlow: "row wrap",
     justifyContent: "space-between",
     display: "flex",

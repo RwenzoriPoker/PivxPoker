@@ -15,12 +15,12 @@ type ButtonVariant =
 const variantBackgroundObj: { [k in ButtonVariant]: string } = {
    "bright-red": brightRedButton,
    blue:
-      "linear-gradient(90deg, rgba(27,78,136,1) 26%, rgba(20,64,111,1) 46%) !important",
+      "linear-gradient(183deg, #0085B1, #238AA1)",
    gray: grayButton,
-   red:
-      "linear-gradient(101deg, #430e70, #4D3077), #662D91 !important",
+   red: //"linear-gradient(101deg, #430e70, #4D3077), #662D91 !important",
+      "linear-gradient( 183deg ,#9621ff,#7d21ff)",
    yellow: `url(${yellowButton})`,
-   green: "linear-gradient(90deg, #662D91, #4D3077), #662D91 !important",
+   green: "linear-gradient( 183deg ,#9621ff,#7d21ff)",
 };
 
 const buttonSizeObj: { [k in ButtonSize]: FlattenSimpleInterpolation } = {
@@ -49,8 +49,8 @@ export default styled.div<{ variant?: ButtonVariant; size?: ButtonSize }>`
    background-size: cover;
    margin-bottom: 16px;
    background: ${(p) => variantBackgroundObj[p.variant || "gray"]};
-   border-radius: 14px;
-   box-shadow: 2px 3px 1px rgba(0,0,0,0.4);
+   border-radius: 50px;
+   box-shadow: 6px 6px 6px rgba(0,0,0,0.4);
    cursor: pointer;
    background-size: cover;
    ${(p) => buttonSizeObj[p.size || "large"]};

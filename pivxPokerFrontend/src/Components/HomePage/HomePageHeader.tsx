@@ -20,7 +20,7 @@ const LogoDescription = styled.div`
 `;
 
 const LogoDescriptionSub = styled.div`
-    color: #130d1e;
+    color: #FFF;
     display: inline;
     font-family: Montserrat;
 `;
