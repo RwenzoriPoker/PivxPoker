@@ -7,6 +7,8 @@ const INITIAL_STATE = {
   loginUserRole: "",
   loginUserWalletAddress: "",
   loginUserDepositAddress: "",
+  loginUserShieldDepositAddress: "",
+  loginUserShieldWalletAddress: "",
   loginUserAvatar: "",
   loginUserLevel: "",
 };
@@ -19,6 +21,8 @@ const LoginReducer = (state = INITIAL_STATE, action) => {
   let loginUserPivx;
   let loginUserWalletAddress;
   let loginUserDepositAddress;
+  let loginUserShieldDepositAddress;
+  let loginUserShieldWalletAddress;
   let loginUserAvatar;
   let loginUserLevel;
   let loginUserEmail;
@@ -35,6 +39,8 @@ const LoginReducer = (state = INITIAL_STATE, action) => {
       loginUserRole = data.userInfo.role;
       loginUserDepositAddress = data.userInfo.address;
       loginUserWalletAddress = data.userInfo.my_address;
+      loginUserShieldDepositAddress = data.userInfo.shieldaddress;
+      loginUserShieldWalletAddress = data.userInfo.myshieldaddress;
       loginUserAvatar = data.userInfo.profilePhoto;
       return {
         ...state,
@@ -45,6 +51,8 @@ const LoginReducer = (state = INITIAL_STATE, action) => {
         loginUserRole,
         loginUserDepositAddress,
         loginUserWalletAddress,
+        loginUserShieldDepositAddress,
+        loginUserShieldWalletAddress,
         loginUserAvatar,
         loginUserLevel,
       };
@@ -64,6 +72,17 @@ const LoginReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loginUserWalletAddress: action.loginUserWalletAddress,
+      };
+    case "DEPOSIT_SHIELD_ADDRESS_CHNAGE":
+      return {
+        ...state,
+        loginUserShieldDepositAddress: action.loginUserShieldDepositAddress,
+      };
+
+    case "WALLET_SHIELD_ADDRESS_CHNAGE":
+      return {
+        ...state,
+        loginUserShieldWalletAddress: action.loginUserShieldWalletAddress,
       };
     case "PHOTO_CHANGE":
       return {

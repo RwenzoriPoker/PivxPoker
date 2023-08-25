@@ -65,6 +65,39 @@ const LobbyPage = (props) => {
     }
   }, [props.credential.loginToken]);
   useEffect(() => {
+    if (props.credential.loginToken) {
+      setSocket(
+        io(apiConfig.endPoint, {
+          auth: {
+            token: props.credential.loginToken,
+          },
+        })
+      );
+      if (!props.credential.loginUserShieldDepositAddress) {
+        (async () => {
+          try {
+            const response = await ApiCall(
+              apiConfig[apiConfig.currentEnv],
+              apiConfig.wallet.url,
+              apiConfig.wallet.method,
+              props.credential.loginToken
+            );
+            if (response.status === 200) {
+              props.DepositShieldAddressChange(response.data.wallet);
+            } else {
+              handleToast(response.data.error);
+            }
+          } catch (error) {
+            if (error.response) handleToast(error.response.data.error);
+            else handleToast("Request Failed!");
+          }
+        })();
+      }
+    } else {
+      setSocket(io(apiConfig.endPoint));
+    }
+  }, [props.credential.loginToken]);
+  useEffect(() => {
     if (socket) {
       socket.on("connect", () => {
         // when connection started

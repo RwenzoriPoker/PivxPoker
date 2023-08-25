@@ -29,6 +29,16 @@ export const DepositAddressChange = (loginUserDepositAddress) => ({
   loginUserDepositAddress
 });
 
+export const WalletShieldAddressChange = (loginUserShieldWalletAddress) => ({
+  type: types.WALLET_SHIELD_ADDRESS_CHNAGE,
+  loginUserShieldWalletAddress
+});
+
+export const DepositShieldAddressChange = (loginUserShieldDepositAddress) => ({
+  type: types.DEPOSIT_SHIELD_ADDRESS_CHNAGE,
+  loginUserShieldDepositAddress
+});
+
 export const PhotoChange = (loginUserAvatar) => ({
   type: types.PHOTO_CHANGE,
   loginUserAvatar
