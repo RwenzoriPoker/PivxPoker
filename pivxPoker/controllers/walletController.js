@@ -122,6 +122,7 @@ exports.postWithdrawal = async (req, res, next) => {
 
     if (amount > 0) {
       const respond = await sendToAddress(address, amount);
+      console.log(respond.body.error)
       if (respond.body && respond.body.error == null) {
         const comp = {};
         comp.user = user.id;
