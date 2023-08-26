@@ -51,7 +51,15 @@ WALLET_PORT=
 WALLET_USER=
 WALLET_PASSWORD=
 JWT_SECRET=
+DISCORD_WEBHOOK_NEWGAME=
 ```
+
+The Discord Webhook env format is `ID:TOKEN`, for example (with a fake ID:Token pair):
+`DISCORD_WEBHOOK_NEWGAME=9127598635710559730:0OduM5blLjRS309zzz4pQhINBFhTd-16VDzqrUS5JlqHth7cWRI5Q7uvyCzApXzhT47Y`
+
+If omitted, the Discord Webhook will simply be disabled.
+
+---
 
 I recommend the latest version of node
 
