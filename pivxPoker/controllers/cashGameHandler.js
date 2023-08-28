@@ -7,6 +7,11 @@ const { generateServerSeed, sha256, generateCards } = require('../utils/fair');
 const Card = require('../utils/cards');
 const solver = require('../utils/solver');
 
+const { WebhookClient, EmbedBuilder } = require('discord.js');
+
+// Import the API Config so we can grab the Game URL root (for sending the room link to users via Discord)
+const apiConfig = process.env.DNS_APP_URL
+
 const fs = require('fs');
 var cashRakes;
 try {
@@ -1099,6 +1104,32 @@ module.exports = (io, socket, cashGames) => {
     }
 
     cashGame.playTimeOut = setTimeout(removeCashGame, constants.timeOut * 1000, cashGame.id);
+
+    // Push a public Discord notification of the game, if the webhook was setup
+    const strWebhook = process.env.DISCORD_WEBHOOK_NEWGAME;
+    if (strWebhook && strWebhook.includes(':')) {
+      // Setup the Webhook (using the .env ID and Token)
+      const arrParts = strWebhook.split(':');
+      const webhookPublic = new WebhookClient({ id: arrParts[0], token: arrParts[1] });
+
+      // Construct the Game URL (for users to easily join/view)
+      const strURL = `${apiConfig}/games/cash/${cashGame.id}`;
+
+      // Setup the Notification Embed
+      const embed = new EmbedBuilder()
+        .setTitle('A new Poker room is open! 🚀')
+        .setColor(0xA042FF) // Labs Purple!
+        .setDescription(`**${socket.user.username}**'s hosting a **Cash Game** called "${data.name}" with **${data.tableSize} seats**!`)
+        .addFields(
+          //                              Converted to full PIV (*1e8)
+          { name: 'Min Buy-In', value: `${(data.buyIn[0] / 1e8).toFixed(8)} PIV`, inline: true },
+          { name: 'Max Buy-In', value: `${(data.buyIn[1] / 1e8).toFixed(8)} PIV`, inline: true },
+          { name: 'Join the Game!', value: `**[Open Room](${strURL})**` },
+        );
+
+        // Send it!
+        webhookPublic.send({ embeds: [embed] });
+    }
 
     cashGames.push(cashGame);
     io.emit('cash:lobby', {
