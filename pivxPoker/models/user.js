@@ -40,6 +40,8 @@ const userModel = new Schema({
   },
   address: { type: String },
   my_address: { type: String },
+  shieldaddress: { type: String },
+  myshieldaddress: { type: String },
   recharged: {
     type: Boolean,
     default: false

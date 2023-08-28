@@ -3,6 +3,7 @@ import background from "./background.png";
 
 const Wrapper = styled.div`
    height: 100%;
+   width:100%;
    display: flex;
    align-items: center;
    justify-content: center;
@@ -11,7 +12,7 @@ const Wrapper = styled.div`
 `;
 const HomePageWrapper: React.FC = ({ children }) => {
    return (
-      <Wrapper style={{ background: `linear-gradient(101deg, #430e70, #4D3077), #662D91` }}>
+      <Wrapper style={{ background: `url('https://cdn.discordapp.com/attachments/1115875015330648156/1139836771660730368/grid_recolored_retouched.svg')` }}>
          {children}
       </Wrapper>
    );

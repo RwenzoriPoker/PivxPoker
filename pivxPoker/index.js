@@ -23,7 +23,7 @@ if (require.main === module) {
   const server = app.listen(config.port);
   const io = require('socket.io')(server, {
     cors: {
-      origin: "http://localhost:7777",
+      origin: "http://127.0.0.1:7777",
     }
   });
   require('./routes.js')(app, io);

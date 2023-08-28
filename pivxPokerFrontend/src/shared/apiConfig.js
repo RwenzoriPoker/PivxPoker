@@ -8,11 +8,11 @@ const apiConfig = {
   api: 'http://127.0.0.1:7777',
   app: 'http://127.0.0.1:7777',
 
-
   signUp: { url: '/signup', method: 'post' },
   authenticate: { url: '/authenticate', method: 'post' },
   withdrawal : {url: '/withdrawal', method: 'post' },
   wallet: {url: '/wallet', method: 'get' },
+  walletShield: {url: '/walletShield', method: 'get' },
   profile:{url: '/profile', method: 'post' },
   changePassword:{url: '/change-password', method: 'post' },
   getBonus:{url: '/bonus', method: 'get' },

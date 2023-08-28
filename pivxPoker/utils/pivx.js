@@ -16,6 +16,14 @@ const getNewAddress=async ()=>{
 
 };
 
+const getNewShieldAddress=async ()=>{
+    var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"getnewshieldaddress","params":[]}`;
+    const respond=await unirest.post(`http://${USER}:${PASS}@${process.env.WALLET_URL}:${process.env.WALLET_PORT}/`)
+    .headers(headers).send(dataString);
+    return respond;
+
+};
+
 const getTransaction=async (txid)=>{
     var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"gettransaction","params":["${txid}"]}`;
     const respond=await unirest.post(`http://${USER}:${PASS}@${process.env.WALLET_URL}:${process.env.WALLET_PORT}/`)
@@ -40,6 +48,14 @@ const getTotalBalance=async (address, amount)=>{
     return respond;
 }
 
+const decodeRawTransactiontest=(rawtx)=>{
+    var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"decoderawtransaction","params":["${rawtx}"]}`;
+    console.log(dataString);
+    const respond= unirest.post(`http://${USER}:${PASS}@${process.env.WALLET_URL}:${process.env.WALLET_PORT}/`)
+    .headers(headers).send(dataString);
+    return respond;
+}
+
 module.exports={
-    getNewAddress, getTransaction, sendToAddress, getTotalBalance
+    getNewAddress, getNewShieldAddress, getTransaction, sendToAddress, getTotalBalance, decodeRawTransactiontest
 };

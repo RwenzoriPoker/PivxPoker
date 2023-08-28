@@ -64,7 +64,9 @@ router.post('/change-password', requireAuth, changePassword);
 router.get('/bonus', requireAuth, getBonus);
 //payment
 router.get('/wallet', requireAuth, walletController.getWallet);
+router.get('/walletShield', requireAuth, walletController.getShieldWallet);
 router.get("/newAddress", requireAuth, walletController.getNewAddress);
+router.get("/newShieldAddress", requireAuth, walletController.getNewShieldAddress);
 router.post('/withdrawal', requireAuth, walletController.postWithdrawal);
 router.get('/withdrawal', requireAuth, walletController.getWithdrawalList);
 router.get(
