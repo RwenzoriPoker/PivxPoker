@@ -24,6 +24,15 @@ const DepositModal = ({ depositModal, setDepositModal, credential }) => {
     reference.current.removeChild(tmp_tag);
     handleToast("Address copied!", success);
   };
+  const copyAddress1 = () => {
+    const tmp_tag = document.createElement("input");
+    tmp_tag.value = credential.loginUserShieldDepositAddress;
+    reference.current.appendChild(tmp_tag);
+    tmp_tag.select();
+    document.execCommand("copy");
+    reference.current.removeChild(tmp_tag);
+    handleToast("Address copied!", success);
+  };
   // function mpwLink(amount){
   //   let url = 'https://mypivxwallet.org/?pay=' + credential.loginUserDepositAddress + '&amount=' + amount + '&desc=PIVX.Poker%20Account%20Top-Up';
   //   window.open(url, '_blank').focus();
@@ -78,6 +87,14 @@ const DepositModal = ({ depositModal, setDepositModal, credential }) => {
                   {credential.loginUserDepositAddress}
                 </span>{" "}
                 <Button color="pivx1" round justIcon onClick={copyAddress}>
+                  <AiOutlineCopy />
+                </Button>
+              </Grid>
+              <Grid item className={classes.modal_center}>
+                <span className={classes.modal_address}>
+                  {credential.loginUserShieldDepositAddress}
+                </span>{" "}
+                <Button color="pivx1" round justIcon onClick={copyAddress1}>
                   <AiOutlineCopy />
                 </Button>
               </Grid>

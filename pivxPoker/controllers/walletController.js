@@ -2,7 +2,7 @@ const User = require('../models/user');
 const Withdrawal = require('../models/withdrawal');
 const bcrypt = require('bcryptjs');
 const Recharge = require('../models/recharge');
-const { getNewAddress, sendToAddress, getTransaction } = require('../utils/pivx');
+const { getNewAddress, getNewShieldAddress, sendToAddress, getTransaction } = require('../utils/pivx');
 const { verifyPassword } = require('../utils/authentication');
 
 //get wallet address
@@ -48,6 +48,50 @@ exports.getNewAddress = async (req, res, next) => {
   }
 };
 
+//get Shielded Address wallet address
+exports.getShieldWallet = async (req, res, next) => {
+  // console.log(req.user);
+  const user = await User.findById(req.user.id);
+  try {
+    if (!user.shieldaddress) {
+      const respond = await getNewShieldAddress();
+      if (respond && respond.body.error == null) {
+        // console.log(respond.body.result);
+        user.shieldaddress = respond.body.result;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
+  await user.save();
+  res.status(200).json({ wallet: user.shieldaddress });
+};
+//generate the btc Shielded Address new address
+exports.getNewShieldAddress = async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  try {
+    const now = new Date().getTime();
+    if (now - user.updatedAt > 300000) {
+      const respond = await getNewShieldAddress();
+      if (respond.body.error == null) {
+        user.shieldaddress = respond.body.result;
+        user.updatedAt = new Date().getTime();
+        await user.save();
+        res.status(200).json({ wallet: user.shieldaddress });
+      } else {
+        res.status(400).json({ error: 'Try again 5 minutes later' });
+      }
+    } else {
+      res.status(400).json({ error: 'Try again 5 minutes later' });
+    }
+  } catch (err) {
+    // console.log(err);
+    res.status(400).json({ error: 'Try again 5 minutes later' });
+  }
+};
+
+
 exports.postWithdrawal = async (req, res, next) => {
   const amount = req.body.pivx;
   const address = req.body.wallet;
@@ -78,6 +122,7 @@ exports.postWithdrawal = async (req, res, next) => {
 
     if (amount > 0) {
       const respond = await sendToAddress(address, amount);
+      console.log(respond.body.error)
       if (respond.body && respond.body.error == null) {
         const comp = {};
         comp.user = user.id;

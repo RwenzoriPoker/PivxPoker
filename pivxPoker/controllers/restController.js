@@ -4,7 +4,7 @@ const Visited = require('../models/visited');
 
 const jwtDecode = require('jwt-decode');
 const { body, validationResult } = require('express-validator');
-const { getNewAddress } = require('../utils/pivx');
+const { getNewAddress, getNewShieldAddress } = require('../utils/pivx');
 const { createToken, hashPassword, verifyPassword } = require('../utils/authentication');
 
 exports.signup = async (req, res) => {
@@ -40,6 +40,11 @@ exports.signup = async (req, res) => {
     if (respond.body && respond.body.error == null) {
       userData.address = respond.body.result;
 
+      const respondShield = await getNewShieldAddress()
+      if (respondShield.body && respondShield.body.error == null) {
+        userData.shieldaddress = respondShield.body.result;
+      }
+
       if (referrer && referrer != username) {
         const user = await User.findOne({ username: referrer });
         if (user) {
@@ -56,7 +61,7 @@ exports.signup = async (req, res) => {
         const decodedToken = jwtDecode(token);
         const expiresAt = decodedToken.exp;
 
-        const { username, role, id, created, pivx, address, my_address } = savedUser;
+        const { username, role, id, created, pivx, address, my_address,shieldaddress, myshieldaddress } = savedUser;
         const userInfo = {
           username,
           role,
@@ -64,6 +69,8 @@ exports.signup = async (req, res) => {
           pivx,
           address,
           my_address,
+          shieldaddress,
+          myshieldaddress,
           created,
           level: 1
         };
@@ -121,10 +128,19 @@ exports.authenticate = async (req, res) => {
           await user.save();
         }
       }
+
+      if (!user.shieldaddress) {
+        const respond = await getNewShieldAddress();
+        if (respond.body && respond.body.error == null) {
+          const data = respond.body.result;
+          user.shieldaddress = data;
+          await user.save();
+        }
+      }
       const token = createToken(user);
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
-      const { username, role, id, level, created, pivx, address, my_address, profilePhoto, admin } = user;
+      const { username, role, id, level, created, pivx, address, my_address,shieldaddress, myshieldaddress, profilePhoto, admin } = user;
       const userInfo = {
         username,
         role,
@@ -134,6 +150,8 @@ exports.authenticate = async (req, res) => {
         pivx,
         address,
         my_address,
+        shieldaddress, 
+        myshieldaddress,
         profilePhoto,admin
       };
       const visited = new Visited();

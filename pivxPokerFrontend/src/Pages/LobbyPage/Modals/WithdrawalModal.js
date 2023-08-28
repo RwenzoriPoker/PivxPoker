@@ -153,7 +153,7 @@ const WithdrawalModal = ({ withdrawalModal, setWithdrawalModal, credential,PIVXC
                 style={{ margin: "auto auto" }}
                 onClick={requestWithdrawal}
               >
-                Witharwal
+                Withdrawal
               </Button>
             </Grid>
           </div>
