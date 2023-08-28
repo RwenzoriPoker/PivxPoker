@@ -10,7 +10,7 @@ const solver = require('../utils/solver');
 const { WebhookClient, EmbedBuilder } = require('discord.js');
 
 // Import the API Config so we can grab the Game URL root (for sending the room link to users via Discord)
-const apiConfig = require('../../pivxPokerFrontend/src/shared/apiConfig').default;
+const apiConfig = process.env.DNS_APP_URL
 
 const fs = require('fs');
 var cashRakes;
@@ -1113,7 +1113,7 @@ module.exports = (io, socket, cashGames) => {
       const webhookPublic = new WebhookClient({ id: arrParts[0], token: arrParts[1] });
 
       // Construct the Game URL (for users to easily join/view)
-      const strURL = `${apiConfig.app}/games/cash/${cashGame.id}`;
+      const strURL = `${apiConfig}/games/cash/${cashGame.id}`;
 
       // Setup the Notification Embed
       const embed = new EmbedBuilder()
