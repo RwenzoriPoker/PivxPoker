@@ -24,6 +24,7 @@ const pivxHandler=require('./controllers/pivxHandler');
 
 const chatHandlers = require('./controllers/chatHandler');
 const sitGameHandlers = require('./controllers/sitGameHandler');
+const tournamentGameHandlers = require('./controllers/tournamentGameHandler.js');
 const cashGameHandlers = require('./controllers/cashGameHandler');
 const mainHandlers = require('./controllers/mainHandler');
 
@@ -106,6 +107,7 @@ module.exports = (app, io) => {
   const onConnection = (socket) => {
     chatHandlers(io, socket);
     sitGameHandlers(io, socket, sitGames);
+    tournamentGameHandlers(io, socket, sitGames);
     cashGameHandlers(io, socket, cashGames);
     mainHandlers(io, socket, tournaments, cashGames, sitGames, users);
     pivxHandler(io, socket, users);

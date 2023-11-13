@@ -37,8 +37,10 @@ https://github.com/nodesource/distributions/blob/master/README.md
 sudo apt-get install build-essential
 sudo apt install node-pre-gyp
 ```
-`npm i`
-If you have issues purge the package-lock and try again
+`npm i` 
+If you have issues purge the package-lock and any node_modules you have and try again
+switching node versions OSes or anything else can cause a number of issues with node-gyp building
+nodejs 19 with node-gyp compiles on debian. Each OS and version of node could have diffrent issues and at the moment I don't have the time to support every platform
 
 Once you pivx Daemon syncs restart it so that it is using the settings from the config file
 
@@ -52,6 +54,7 @@ WALLET_USER=
 WALLET_PASSWORD=
 JWT_SECRET=
 DISCORD_WEBHOOK_NEWGAME=
+DNS_APP_URL=
 ```
 
 The Discord Webhook env format is `ID:TOKEN`, for example (with a fake ID:Token pair):
@@ -59,9 +62,21 @@ The Discord Webhook env format is `ID:TOKEN`, for example (with a fake ID:Token 
 
 If omitted, the Discord Webhook will simply be disabled.
 
+To properly link to the new game you also need to set the DNS_APP_URL to the correct base dns for your website
+
 ---
 
-I recommend the latest version of node
+remember when using a reverse proxy to enable websockets for example with nginx:
+```
+      # WebSocket support
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+```
+
+I recommend the latest version of node v20.x at the time of writing
+
+The only vulnerabilities left do not effect anything for the time being and will be fixed later
 
 # Running it
 ## development

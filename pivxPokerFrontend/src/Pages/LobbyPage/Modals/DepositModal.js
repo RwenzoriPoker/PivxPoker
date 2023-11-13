@@ -108,19 +108,19 @@ const DepositModal = ({ depositModal, setDepositModal, credential }) => {
               <Grid item className={classes.modal_center}>
                   <br/>
                   <Button color="pivx1" round onClick={() => {
-                        let url = 'https://mypivxwallet.org/?pay=' + credential.loginUserDepositAddress + '&amount=1&desc=PIVX.Poker%20Account%20Top-Up';
+                        let url = 'https://app.mypivxwallet.org/?pay=' + credential.loginUserDepositAddress + '&amount=1&desc=PIVX.Poker%20Account%20Top-Up';
                         window.open(url, '_blank').focus();
                   }}>
                     1 Pivx
                   </Button>
                   <Button color="pivx1" round onClick={() => {
-                        let url = 'https://mypivxwallet.org/?pay=' + credential.loginUserDepositAddress + '&amount=10&desc=PIVX.Poker%20Account%20Top-Up';
+                        let url = 'https://app.mypivxwallet.org/?pay=' + credential.loginUserDepositAddress + '&amount=10&desc=PIVX.Poker%20Account%20Top-Up';
                         window.open(url, '_blank').focus();
                   }}>
                     10 Pivx
                   </Button>
                   <Button color="pivx1" round onClick={() => {
-                        let url = 'https://mypivxwallet.org/?pay=' + credential.loginUserDepositAddress + '&amount=100&desc=PIVX.Poker%20Account%20Top-Up';
+                        let url = 'https://app.mypivxwallet.org/?pay=' + credential.loginUserDepositAddress + '&amount=100&desc=PIVX.Poker%20Account%20Top-Up';
                         window.open(url, '_blank').focus();
                   }}>
                     100 Pivx

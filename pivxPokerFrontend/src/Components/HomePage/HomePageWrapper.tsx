@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 `;
 const HomePageWrapper: React.FC = ({ children }) => {
    return (
-      <Wrapper style={{ background: `url('https://cdn.discordapp.com/attachments/1115875015330648156/1139836771660730368/grid_recolored_retouched.svg')` }}>
+      <Wrapper style={{ background: `url('https://cdn.discordapp.com/attachments/789310651679244288/1150490979254685856/gridanimatedv3.svg')` }}>
          {children}
       </Wrapper>
    );

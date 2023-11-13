@@ -1,8 +1,8 @@
 module.exports = {
   port: process.env.PORT || 7777,
   db: {
-    prod: process.env.DATABASE_URL || 'mongodb://localhost/pivx_poker',
-    test: 'mongodb://localhost/pivx_poker',
+    prod: process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/pivx_poker',
+    test: 'mongodb://127.0.0.1:27017/pivx_poker',
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
