@@ -35,6 +35,12 @@ const ranks = [
   'a Royal Flush'
 ];
 
+/**
+ * Mainly unused at the moment
+ * @param {*} top 
+ * @param {*} player 
+ * @returns 
+ */
 function valueCompare(top, player){
   if(top.length==0)
     return 1;
@@ -49,7 +55,12 @@ function valueCompare(top, player){
 }
 
 
-
+/**
+ * Does some checks and handles the bets
+ * @param {object} cashGame 
+ * @param {*} position 
+ * @returns 
+ */
 function allowedBet(cashGame, position) {
   const players = cashGame.players;
   let minRaise, maxRaise, call, status;
@@ -99,8 +110,12 @@ function allowedBet(cashGame, position) {
   };
 }
 
+/**
+ * validation for create table
+ * @param {*} data 
+ * @returns 
+ */
 function createValidation(data) {
-  //validation for create table
   if (data.blinds * 50 > data.buyIn[0] || data.blinds * 500 < data.buyIn[0]) {
     // callback({
     //   message:"Buy in error!",
@@ -124,8 +139,14 @@ function createValidation(data) {
   return true;
 }
 
+/**
+ * filter table data to show to the players
+ * @param {*} cashGame 
+ * @param {*} socket 
+ * @param {*} open 
+ * @returns 
+ */
 function filterTableToShow(cashGame, socket, open = false) {
-  //filter table data to show to the players
   const data = { ...cashGame, playTimeOut: null };
   data.players = data.players.map((ele) => {
     if (open) {
@@ -159,6 +180,12 @@ function filterTableToShow(cashGame, socket, open = false) {
   delete data.password;
   return data;
 }
+
+/**
+ * 
+ * @param {*} player 
+ * @returns 
+ */
 function filterPlayerToShow(player) {
   let item = { ...player, playTimeOut: null };
   delete item.behavior;
@@ -173,8 +200,12 @@ function filterPlayerToShow(player) {
   return item;
 }
 
+/**
+ * filter table to show in the lobby
+ * @param {*} cashGames 
+ * @returns 
+ */
 function filterTableForLobby(cashGames) {
-  //filter table to show in the lobby
   const filteredGames = cashGames.map((cashGame) => {
     const item = {};
     item.id = cashGame.id;
@@ -191,10 +222,16 @@ function filterTableForLobby(cashGames) {
   });
   return filteredGames;
 }
-
+/**
+ * dealer==false => players.bet==game.bet->nextRound
+ * true=> get newPostion
+ * @param {object} cashGame 
+ * @param {*} position 
+ * @param {*} stop 
+ * @returns 
+ */
 function getNextPlayer(cashGame, position, stop = true) {
-  //dealer==false => players.bet==game.bet->nextRound
-  //true=> get newPostion
+
   let players = cashGame.players;
   let newPosition = -1;
   for (let i = 1; i < players.length; i++) {
@@ -237,6 +274,10 @@ function getNextPlayer(cashGame, position, stop = true) {
   return newPosition;
 }
 
+/**
+ * 
+ * @param {object} cashGame 
+ */
 function sharePlayerCards(cashGame) {
   if (!cashGame.cardNo) cashGame.cardNo = 0;
   for (let i = 0; i < cashGame.players.length; i++) {
@@ -249,9 +290,20 @@ function sharePlayerCards(cashGame) {
   }
 }
 
+
+/**
+ * The main exported function for running the cash game
+ * @param {*} io 
+ * @param {*} socket 
+ * @param {*} cashGames 
+ */
 module.exports = (io, socket, cashGames) => {
+  /**
+   * TimeOut and remove game
+   * @param {*} id 
+   * @returns 
+   */
   async function removeCashGame(id) {
-    //TimeOut and remove game
     const index = cashGames.findIndex((ele) => (ele.id = id));
     const cashGame = cashGames[index];
     console.log('remove game');
@@ -362,8 +414,11 @@ module.exports = (io, socket, cashGames) => {
 
     io.to(cashGame.roomId).emit('cash:closed');
   }
+  /**
+   * written words in the table - player won xx chips with xxxxx
+   * @param {object} cashGame 
+   */
   function calcResult(cashGame) {
-    //written words in the table - player won xx chips with xxxxx
     let winner = '',
       result = '';
     //init
@@ -561,9 +616,14 @@ module.exports = (io, socket, cashGames) => {
       setNextRound(cashGame);
     }, 6500);
   }
+  /**
+   * When only one or 0 players left
+   * init
+   * @param {object} cashGame 
+   * @returns 
+   */
   function endGame(cashGame) {
-    //when only one or 0 players left
-    //init
+
     console.log('end game');
     for (let i = 0; i < cashGame.players.length; i++) {
       const player = cashGame.players[i];
@@ -646,7 +706,11 @@ module.exports = (io, socket, cashGames) => {
     }
     setTimeout(setNextRound, 3500, cashGame);
   }
-
+  /**
+   * 
+   * @param {object} cashGame 
+   * @returns 
+   */
   function nextCard(cashGame) {
     console.log('next card');
     //init
@@ -729,6 +793,12 @@ module.exports = (io, socket, cashGames) => {
     }, 1500);
   }
 
+  /**
+   * 
+   * @param {object} cashGame 
+   * @param {*} position 
+   * @returns 
+   */
   function nextTurn(cashGame, position) {
     const players = cashGame.players;
     let newPosition = getNextPlayer(cashGame, position);
@@ -772,6 +842,11 @@ module.exports = (io, socket, cashGames) => {
     }
   }
 
+  /**
+   * 
+   * @param {object} cashGame 
+   * @param {*} position 
+   */
   function standPlayer(cashGame, position) {
     cashGame.players[position].stand = true;
     cashGame.players[position].turn = false;
@@ -785,6 +860,11 @@ module.exports = (io, socket, cashGames) => {
     });
   }
 
+  /**
+   * 
+   * @param {object} cashGame 
+   * @param {*} position 
+   */
   function turnTimeOut(cashGame, position) {
     cashGame.players[position].turnTime += cashGame.turnTime * 10;
     const player = cashGame.players[position];
@@ -840,6 +920,12 @@ module.exports = (io, socket, cashGames) => {
     }
   }
 
+  /**
+   * 
+   * @param {*} players 
+   * @param {*} position 
+   * @param {*} amount 
+   */
   function bet(players, position, amount) {
     if (players[position].balance <= amount) {
       players[position].bet += players[position].balance;
@@ -851,6 +937,10 @@ module.exports = (io, socket, cashGames) => {
     }
   }
 
+  /**
+   * 
+   * @param {object} cashGame 
+   */
   function setFirstRound(cashGame) {
     cashGame.nonce = cashGame.nonce ? cashGame.nonce + 1 : 0;
     cashGame.cards = generateCards(
@@ -955,6 +1045,10 @@ module.exports = (io, socket, cashGames) => {
     });
   }
 
+  /**
+   * 
+   * @param {object} cashGame 
+   */
   function setNextRound(cashGame) {
     cashGame.nonce++;
     cashGame.cards = generateCards(
@@ -1045,6 +1139,12 @@ module.exports = (io, socket, cashGames) => {
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //socket event functions
+  /**
+   * Socket event for creating the game
+   * @param {*} data 
+   * @param {*} callback 
+   * @returns 
+   */
   const createGame = async (data, callback) => {
     if (!socket.user) {
       callback({
@@ -1142,6 +1242,11 @@ module.exports = (io, socket, cashGames) => {
     });
   };
 
+  /**
+   * Socket event for entering the Game as a player
+   * @param {*} id 
+   * @param {*} callback 
+   */
   const enterGame = async (id, callback) => {
     const cashGame = cashGames.find((ele) => ele.id == id);
     if (cashGame) {
@@ -1153,6 +1258,11 @@ module.exports = (io, socket, cashGames) => {
     }
   };
 
+  /**
+   * Socket event for showing cards at the end of the game
+   * @param {*} id 
+   * @param {*} callback 
+   */
   const showMyCards = async (id, callback) => {
     const cashGame = cashGames.find((ele) => ele.id == id);
     if (cashGame) {
@@ -1162,6 +1272,15 @@ module.exports = (io, socket, cashGames) => {
     }
   };
 
+  /**
+   * Socket event for joining into a game lots of validation
+   * @param {*} roomId 
+   * @param {*} playerNo 
+   * @param {*} password 
+   * @param {*} buyIn 
+   * @param {*} callback 
+   * @returns 
+   */
   const joinGame = async (roomId, playerNo, password, buyIn, callback) => {
     console.log('join');
     const cashGame = cashGames.find((ele) => ele.id == roomId);
@@ -1286,6 +1405,12 @@ module.exports = (io, socket, cashGames) => {
     }
   };
 
+  /**
+   * Socket event for betting on a game
+   * @param {*} roomId 
+   * @param {*} bet 
+   * @returns 
+   */
   const betGame = async (roomId, bet) => {
     const cashGame = cashGames.find((ele) => ele.id == roomId);
     if (!cashGame) {
@@ -1408,6 +1533,13 @@ module.exports = (io, socket, cashGames) => {
     }
   };
 
+  /**
+   * 
+   * @param {*} roomId 
+   * @param {*} behavior 
+   * @param {*} callback 
+   * @returns 
+   */
   const behaviorGame = async (roomId, behavior, callback) => {
     const cashGame = cashGames.find((ele) => ele.id == roomId);
     if (!cashGame) {
@@ -1418,6 +1550,12 @@ module.exports = (io, socket, cashGames) => {
     callback(behavior);
   };
 
+  /**
+   * 
+   * @param {*} roomId 
+   * @param {*} callback 
+   * @returns 
+   */
   const standGame = async (roomId, callback) => {
     const cashGame = cashGames.find((ele) => ele.id == roomId);
     if (!cashGame) {
@@ -1467,6 +1605,12 @@ module.exports = (io, socket, cashGames) => {
     }
   };
 
+  /**
+   * 
+   * @param {string} roomId 
+   * @param {object} callback 
+   * @returns 
+   */
   const leaveGame = async (roomId, callback) => {
     const cashGame = cashGames.find((ele) => ele.id == roomId);
     if (!cashGame) {

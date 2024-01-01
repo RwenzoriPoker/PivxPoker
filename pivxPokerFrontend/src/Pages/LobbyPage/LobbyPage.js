@@ -99,10 +99,13 @@ const LobbyPage = (props) => {
   }, [props.credential.loginToken]);
   useEffect(() => {
     if (socket) {
+      //The res comes from mainHandler.js
       socket.on("connect", () => {
         // when connection started
         console.log("connect");
         socket.emit("lobby", (res) => {
+          console.log("emit lobby")
+          console.log(res)
           props.PIVXChange(res.pivx);
           setCashGames(
             res.cashGames.map((ele) => {
@@ -116,6 +119,7 @@ const LobbyPage = (props) => {
             })
           );
           setTournaments(
+            
             res.tournaments.map((ele) => {
               ele.current =
                 ele.players.findIndex(
@@ -176,12 +180,36 @@ const LobbyPage = (props) => {
           })
         );
       });
+
+
+
+          //ISSUE WAS TO DO WITH THE WEIRD SOCKET CONNECTION TRYING TO CONNECT FROMT HE EMIT ON TOURNAMENT GAME HANDLER 
+          //issue still exists and its something to do with it not passing the right data or not grabbing from the right data
+          //Make sure to pay attention to socket.on vs socket.emit
+          //emit feeds to the router
+
+
+      socket.on("tournament:lobby", (res) => {
+        console.log("tournament:lobby")
+        console.log(res.TournamentGames)
+        setTournaments(
+          res.TournamentGames.map((ele) => {
+            ele.current =
+              ele.players.findIndex(
+                (ele1) => ele1 == props.credential.loginUserId
+              ) > -1
+                ? true
+                : false;
+            return ele;
+          })
+        );
+      });
     }
     return () => {
       if (socket) socket.disconnect();
     };
   }, [socket]);
-  console.log(cashGames);
+
   return (
     <BackgroundPageWrapper>
       <LobbyHeader

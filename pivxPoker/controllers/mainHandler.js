@@ -3,6 +3,9 @@ const User = require('../models/user');
 
 module.exports = (io, socket, tournaments, cashGames, sitGames, users) => {
 
+  /**
+   * This occures when a user is disconnected
+   */
   const disconnectUser = () => {
 
     // for(let i=0;i<sitGames.length;i++){
@@ -21,17 +24,29 @@ module.exports = (io, socket, tournaments, cashGames, sitGames, users) => {
    
   };
 
+  /**
+   * This is the main setter for giving information to the client about games when seen from the lobby pages
+   * @param {object} callback 
+   */
   const getLobby=async (callback) => {    
     callback({
       tournaments: tournaments.map((ele)=>{
         const item={};
-        item.title=ele.title;
+        item.id=ele.id;
+        item.name=ele.name;
+        item.blindSchedule=ele.blindSchedule;
         item.buyIn=ele.buyIn;
-        item.prizePool=ele.prizePool;
-        item.playersCount = ele.players.filter((ele1) => ele1 != null).length;
-        item.players= ele.players.filter((ele1) => ele1 != null).map((ele1) => ele1.user.id);        
         item.tableSize=ele.tableSize;
-        item.status=ele.status;
+        item.startingStack=ele.startingStack;
+        item.firstPlace=ele.firstPlace;
+        item.secondPlace=ele.secondPlace;
+        item.thirdPlace=ele.thirdPlace;
+        item.turnTime = ele.turnTime;
+        item.privacy = ele.privacy;
+        item.playersCount = ele.players.filter((ele1) => ele1 != null).length;
+        item.players= ele.players.filter((ele1) => ele1 != null).map((ele1) => ele1.user.id);
+        item.limit=ele.limit;
+        item.playing=ele.playing;
         return item;
       }),
       cashGames: cashGames.map((ele)=>{

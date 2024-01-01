@@ -7,6 +7,12 @@ const { body, validationResult } = require('express-validator');
 const { getNewAddress, getNewShieldAddress } = require('../utils/pivx');
 const { createToken, hashPassword, verifyPassword } = require('../utils/authentication');
 
+/**
+ * Occures when sign up happens
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.signup = async (req, res) => {
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -99,6 +105,12 @@ exports.signup = async (req, res) => {
   }
 };
 
+/**
+ * Validates username and password information
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.authenticate = async (req, res) => {
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -177,6 +189,13 @@ exports.authenticate = async (req, res) => {
   }
 };
 
+/**
+ * Profile information and changes to profiles
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.profile = async (req, res, next) => {
   const user = await User.findById(req.user.id);
   if (req.body.avatar) {
@@ -204,6 +223,13 @@ exports.profile = async (req, res, next) => {
   }
 };
 
+/**
+ * Password changes
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.changePassword = async (req, res, next) => {
   const password = req.body.password;
   const newPassword = req.body.newPassword;
@@ -219,6 +245,13 @@ exports.changePassword = async (req, res, next) => {
   } else return res.status(401).json({ error: 'Password incorrect!' });
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getBonus = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
@@ -251,6 +284,9 @@ exports.getBonus = async (req, res, next) => {
   }
 };
 
+/**
+ * returns the errors
+ */
 exports.validateUser = [
   body('username')
     .exists()

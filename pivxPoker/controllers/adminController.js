@@ -1,3 +1,7 @@
+/**
+ * This page is mainly for adminPage to get its data
+ */
+
 const User = require('../models/user');
 const Visited = require('../models/visited');
 const Ticket = require('../models/ticket');
@@ -8,6 +12,14 @@ const SitGame=require('../models/sitGame');
 const { sha256 } = require('../utils/fair');
 const { sendToAddress, getTotalBalance } = require('../utils/pivx');
 
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getTotal = async (req, res, next) => {
   const visits = await Visited.countDocuments({});
   const users = await User.countDocuments({});
@@ -28,6 +40,13 @@ exports.getTotal = async (req, res, next) => {
   return res.status(200).json({ visits, users, recharges, withdraws, balance });
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getVisit = async (req, res, next) => {
   let fromDate = new Date(req.params.from);
   const toDate = new Date(req.params.to);
@@ -47,6 +66,13 @@ exports.getVisit = async (req, res, next) => {
   return res.json({ visits, users });
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getWallet = async (req, res, next) => {
   let fromDate = new Date(req.params.from);
   const toDate = new Date(req.params.to);
@@ -72,7 +98,12 @@ exports.getWallet = async (req, res, next) => {
   return res.json({ recharges, withdraws });
 };
 
-//get feedback
+/**
+ * get feedback
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.getTicket = async (req, res, next) => {
   const status = req.params.status == 1 ? true : false;
   const feedbacks = await Ticket.find({ status })
@@ -83,6 +114,12 @@ exports.getTicket = async (req, res, next) => {
   res.status(200).json({ feedbacks, last_page: Math.ceil(total / 20) });
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.patchTicket = async (req, res, next) => {
   const feedback = await Ticket.findById(req.params.id);
   feedback.status = true;
@@ -90,8 +127,13 @@ exports.patchTicket = async (req, res, next) => {
   res.status(200).json({ message: 'ok' });
 };
 
-//user Admin
-
+/**
+ * user Admin
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getUsers = async (req, res, next) => {
   const search = req.params.search;
   const page = req.params.page;
@@ -125,6 +167,13 @@ exports.getUsers = async (req, res, next) => {
   }
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getUser = async (req, res, next) => {
   try {
     const user_db = await User.findById(req.params.id);
@@ -138,6 +187,13 @@ exports.getUser = async (req, res, next) => {
     return res.status(400).json({ message: 'failed' });
   }
 };
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.putPointUp = async (req, res, next) => {
   const user = await User.findById(req.params.id);
   user.admin = true;
@@ -145,12 +201,26 @@ exports.putPointUp = async (req, res, next) => {
 
   return res.status(200).json(user);
 };
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.putPointDown = async (req, res, next) => {
   const user = await User.findById(req.params.id);
   user.admin = false;
   await user.save();
   return res.status(200).json(user);
 };
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.removeUser = async (req, res, next) => {
   await Recharge.deleteMany({ user: req.params.id });
   await Ticket.deleteMany({ sender: req.params.id });
@@ -161,8 +231,13 @@ exports.removeUser = async (req, res, next) => {
   return res.status(200).json({ message: 'ok' });
 };
 
-// added for admin withdraw page
-
+/**
+ * added for admin withdraw page
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getTotalProfit = async (req, res, next) => {
   let balanceUsers = await User.aggregate([
     { $match: {} },
@@ -176,6 +251,13 @@ exports.getTotalProfit = async (req, res, next) => {
   return res.status(200).json({ balanceWallet: 0, balanceUsers });
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.postProfitWithdraw = async (req, res, next) => {
   const respond = await sendToAddress(req.body.address, req.body.amount);
   if (respond.body && respond.body.error == null) {
@@ -184,6 +266,13 @@ exports.postProfitWithdraw = async (req, res, next) => {
   return res.status(403).json({ message: 'Failed!' });
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.postRakes = async (req, res, next) => {
   try {
     if (req.body.sitRakes) {
@@ -209,6 +298,13 @@ exports.postRakes = async (req, res, next) => {
   }
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getTableData = async (req, res, next) => {
   try {
     if(req.params.category==0){
@@ -240,6 +336,13 @@ exports.getTableData = async (req, res, next) => {
   }
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.test = async (req, res, next) => {
   const {category}=req.params;
   console.log(category)

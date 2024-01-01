@@ -107,7 +107,7 @@ module.exports = (app, io) => {
   const onConnection = (socket) => {
     chatHandlers(io, socket);
     sitGameHandlers(io, socket, sitGames);
-    tournamentGameHandlers(io, socket, sitGames);
+    tournamentGameHandlers(io, socket, tournaments);
     cashGameHandlers(io, socket, cashGames);
     mainHandlers(io, socket, tournaments, cashGames, sitGames, users);
     pivxHandler(io, socket, users);

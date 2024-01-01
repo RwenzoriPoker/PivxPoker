@@ -9,6 +9,7 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import LobbyPage from "./Pages/LobbyPage/LobbyPage";
 import CashGame from "./Pages/Games/cashGame";
 import SitGame from "./Pages/Games/sitGame";
+import TournamentGames from "./Pages/Games/tournamentGame";
 
 import { createBrowserHistory } from "history";
 import BackgroundPageWrapper from "./StyledComponents/BackgroundPageWrapper";
@@ -79,6 +80,7 @@ const App = (props) => {
         </Route>
         <Route path="/games/tournament/:room">
           <BackgroundPageWrapper>
+            <TournamentGames />
           </BackgroundPageWrapper>
         </Route>
       </Switch>

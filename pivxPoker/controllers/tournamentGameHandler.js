@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const User = require('../models/user');
-const TournamentGame = require('../models/tournamentGame');
+const TournamentConGame = require('../models/tournamentGame');
 const constants = require('../utils/constants');
 const { generateServerSeed, sha256, generateCards } = require('../utils/fair');
 const Card = require('../utils/cards');
@@ -29,6 +29,12 @@ const ranks=[
   "a Royal Flush"
 ];
 
+/**
+ * Not used currently
+ * @param {*} top 
+ * @param {*} player 
+ * @returns 
+ */
 function valueCompare(top, player){
   if(top.length==0)
     return 1;
@@ -43,7 +49,12 @@ function valueCompare(top, player){
 }
 
 
-
+/**
+ * Validation and bet handling
+ * @param {*} TournamentGame 
+ * @param {*} position 
+ * @returns 
+ */
 function allowedBet(TournamentGame, position) {
   const players = TournamentGame.players;
   let minRaise, maxRaise, call, status;
@@ -93,9 +104,12 @@ function allowedBet(TournamentGame, position) {
   };
 }
 
+/**
+ * validation for create table
+ * @param {*} data 
+ * @returns 
+ */
 function createValidation(data) {
-  //validation for create table
-
   if (!data.name || data.name == '') return false;
   if (data.name.length<3 || data.name.length>15) return false;
   if (data.blindSchedule < 0 || data.blindSchedule > 4) return false;
@@ -106,8 +120,14 @@ function createValidation(data) {
   return true;
 }
 
+/**
+ * filter table data to show to the players
+ * @param {*} TournamentGame 
+ * @param {*} socket 
+ * @param {*} open 
+ * @returns 
+ */
 function filterTableToShow(TournamentGame, socket, open = false) {
-  //filter table data to show to the players
   const data = { ...TournamentGame, playTimeOut: null, blindTimeOut: null };
   data.players = data.players.map((ele) => {
     if (open) {
@@ -142,8 +162,12 @@ function filterTableToShow(TournamentGame, socket, open = false) {
   return data;
 }
 
+/**
+ * filter table to show in the lobby
+ * @param {*} TournamentGames 
+ * @returns 
+ */
 function filterTableForLobby(TournamentGames) {
-  //filter table to show in the lobby
   const filteredGames = TournamentGames.map((ele) => {
     const item = {};
     item.id = ele.id;
@@ -166,9 +190,15 @@ function filterTableForLobby(TournamentGames) {
   return filteredGames;
 }
 
+/**
+ * dealer==false => players.bet==game.bet->nextRound
+ * true=> get newPostion
+ * @param {*} TournamentGame 
+ * @param {*} position 
+ * @param {*} stop 
+ * @returns 
+ */
 function getNextPlayer(TournamentGame, position, stop = true) {
-  //dealer==false => players.bet==game.bet->nextRound
-  //true=> get newPostion
   let players = TournamentGame.players;
   let newPosition = -1;
   for (let i = 1; i < players.length; i++) {
@@ -209,6 +239,10 @@ function getNextPlayer(TournamentGame, position, stop = true) {
   return newPosition;
 }
 
+/**
+ * 
+ * @param {*} TournamentGame 
+ */
 function sharePlayerCards(TournamentGame) {
   if (!TournamentGame.cardNo) TournamentGame.cardNo = 0;
   for (let i = 0; i < TournamentGame.players.length; i++) {
@@ -218,7 +252,17 @@ function sharePlayerCards(TournamentGame) {
   }
 }
 
+/**
+ * 
+ * @param {*} io 
+ * @param {*} socket 
+ * @param {*} TournamentGames 
+ */
 module.exports = (io, socket, TournamentGames) => {
+  /**
+   * Removes the game based on the id
+   * @param {string} id 
+   */
   async function removeTournamentGame(id) {
     console.log('remove game');
     //TimeOut and remove game
@@ -240,17 +284,23 @@ module.exports = (io, socket, TournamentGames) => {
         }
       }
     }
-    const TournamentGameDB = await TournamentGame.findById(TournamentGame.id);
+    const TournamentGameDB = await TournamentConGame.findById(TournamentGame.id);
     TournamentGameDB.closed = true;
     await TournamentGameDB.save();
     TournamentGames.splice(index, 1);
-    io.emit('sit:lobby', {
+    console.log("sending ping")
+    console.log(TournamentGames)
+    io.emit('tournament:lobby', {
       TournamentGames: filterTableForLobby(TournamentGames)
     });
-    io.to(TournamentGame.roomId).emit('sit:closed');
+    io.to(TournamentGame.roomId).emit('tournament:closed');
   }
+  /**
+   * Calculated the results
+   * written words in the table - player won xx chips with xxxxx
+   * @param {object} TournamentGame 
+   */
   function calcResult(TournamentGame) {
-    //written words in the table - player won xx chips with xxxxx
     let winner='', result='';
     //init
     for (let i = 0; i < TournamentGame.players.length; i++) {
@@ -265,7 +315,7 @@ module.exports = (io, socket, TournamentGames) => {
       }
     }
 
-    io.to(TournamentGame.roomId).emit('sit:open', filterTableToShow(TournamentGame, null, true));
+    io.to(TournamentGame.roomId).emit('tournament:open', filterTableToShow(TournamentGame, null, true));
     //compare the result
     let players = TournamentGame.players;
     const top = { rank: 0, value: 0, value2: 0, value3: 0, value4: 0, value5: 0, index: [] };
@@ -380,7 +430,7 @@ module.exports = (io, socket, TournamentGames) => {
       }
     }
     setTimeout(() => {
-      io.to(TournamentGame.roomId).emit('sit:result', filterTableToShow(TournamentGame, null, true), winner, result);
+      io.to(TournamentGame.roomId).emit('tournament:result', filterTableToShow(TournamentGame, null, true), winner, result);
     }, 1500);
 
     setTimeout(async () => {
@@ -488,15 +538,15 @@ module.exports = (io, socket, TournamentGames) => {
           } catch (e) {
             console.log(e);
           }
-          io.to(TournamentGame.roomId).emit('sit:second', outPlayerNumbers);
-        } else io.to(TournamentGame.roomId).emit('sit:playersOut', outPlayerNumbers);
+          io.to(TournamentGame.roomId).emit('tournament:second', outPlayerNumbers);
+        } else io.to(TournamentGame.roomId).emit('tournament:playersOut', outPlayerNumbers);
 
         io.to(TournamentGame.roomId).emit(
           'sit:first',
           TournamentGame.players.findIndex((ele) => ele != null)
         );
         //finish the sit game
-        const TournamentGameDB = await TournamentGame.findById(TournamentGame.id);
+        const TournamentGameDB = await TournamentConGame.findById(TournamentGame.id);
         TournamentGameDB.closed = true;
         await TournamentGameDB.save();
         clearTimeout(TournamentGame.playTimeOut);
@@ -505,7 +555,7 @@ module.exports = (io, socket, TournamentGames) => {
           TournamentGames.findIndex((ele) => ele.id == TournamentGame.id),
           1
         );
-        io.emit('sit:lobby', {
+        io.emit('tournament:lobby', {
           TournamentGames: filterTableForLobby(TournamentGames)
         });
         return;
@@ -553,9 +603,9 @@ module.exports = (io, socket, TournamentGames) => {
           } catch (e) {
             console.log(e);
           }
-          io.to(TournamentGame.roomId).emit('sit:third', outPlayerNumbers);
-        } else io.to(TournamentGame.roomId).emit('sit:playersOut', outPlayerNumbers);
-        io.emit('sit:lobby', {
+          io.to(TournamentGame.roomId).emit('tournament:third', outPlayerNumbers);
+        } else io.to(TournamentGame.roomId).emit('tournament:playersOut', outPlayerNumbers);
+        io.emit('tournament:lobby', {
           TournamentGames: filterTableForLobby(TournamentGames)
         });
         setTimeout(() => {
@@ -564,8 +614,8 @@ module.exports = (io, socket, TournamentGames) => {
           setNextRound(TournamentGame);
         }, 4500);
       } else {
-        io.to(TournamentGame.roomId).emit('sit:playersOut', outPlayerNumbers);
-        io.emit('sit:lobby', {
+        io.to(TournamentGame.roomId).emit('tournament:playersOut', outPlayerNumbers);
+        io.emit('tournament:lobby', {
           TournamentGames: filterTableForLobby(TournamentGames)
         });
         setTimeout(() => {
@@ -576,8 +626,11 @@ module.exports = (io, socket, TournamentGames) => {
       }
     }, 3000);
   }
+  /**
+   * when only one or 0 players left
+   * @param {object} TournamentGame 
+   */
   function endGame(TournamentGame) {
-    //when only one or 0 players left
     //init
     console.log('end game');
     for (let i = 0; i < TournamentGame.players.length; i++) {
@@ -593,7 +646,7 @@ module.exports = (io, socket, TournamentGames) => {
       }
     }
     TournamentGame.tableCards = [];
-    io.to(TournamentGame.roomId).emit('sit:open', filterTableToShow(TournamentGame, null, true));
+    io.to(TournamentGame.roomId).emit('tournament:open', filterTableToShow(TournamentGame, null, true));
     let players = TournamentGame.players;
     let winner, maxWinBet;
     if (players.filter((ele) => ele != null && !ele.stand && !ele.fold).length == 1) {
@@ -620,7 +673,7 @@ module.exports = (io, socket, TournamentGames) => {
       }
     }
     setTimeout(() => {
-      io.to(TournamentGame.roomId).emit('sit:result', filterTableToShow(TournamentGame, null, true));
+      io.to(TournamentGame.roomId).emit('tournament:result', filterTableToShow(TournamentGame, null, true));
     }, 1000);
 
     setTimeout(async () => {
@@ -727,8 +780,8 @@ module.exports = (io, socket, TournamentGames) => {
           } catch (e) {
             console.log(e);
           }
-          io.to(TournamentGame.roomId).emit('sit:second', outPlayerNumbers);
-        } else io.to(TournamentGame.roomId).emit('sit:playersOut', outPlayerNumbers);
+          io.to(TournamentGame.roomId).emit('tournament:second', outPlayerNumbers);
+        } else io.to(TournamentGame.roomId).emit('tournament:playersOut', outPlayerNumbers);
 
         io.to(TournamentGame.roomId).emit(
           'sit:first',
@@ -736,7 +789,7 @@ module.exports = (io, socket, TournamentGames) => {
         );
         //finish the sit game
 
-        const TournamentGameDB = await TournamentGame.findById(TournamentGame.id);
+        const TournamentGameDB = await TournamentConGame.findById(TournamentGame.id);
         TournamentGameDB.closed = true;
         await TournamentGameDB.save();
         clearTimeout(TournamentGame.playTimeOut);
@@ -745,7 +798,7 @@ module.exports = (io, socket, TournamentGames) => {
           TournamentGames.findIndex((ele) => ele.id == TournamentGame.id),
           1
         );
-        io.emit('sit:lobby', {
+        io.emit('tournament:lobby', {
           TournamentGames: filterTableForLobby(TournamentGames)
         });
         return;
@@ -793,9 +846,9 @@ module.exports = (io, socket, TournamentGames) => {
           } catch (e) {
             console.log(e);
           }
-          io.to(TournamentGame.roomId).emit('sit:third', outPlayerNumbers);
-        } else io.to(TournamentGame.roomId).emit('sit:playersOut', outPlayerNumbers);
-        io.emit('sit:lobby', {
+          io.to(TournamentGame.roomId).emit('tournament:third', outPlayerNumbers);
+        } else io.to(TournamentGame.roomId).emit('tournament:playersOut', outPlayerNumbers);
+        io.emit('tournament:lobby', {
           TournamentGames: filterTableForLobby(TournamentGames)
         });
         setTimeout(() => {
@@ -804,8 +857,8 @@ module.exports = (io, socket, TournamentGames) => {
           setNextRound(TournamentGame);
         }, 1500);
       } else {
-        io.to(TournamentGame.roomId).emit('sit:playersOut', outPlayerNumbers);
-        io.emit('sit:lobby', {
+        io.to(TournamentGame.roomId).emit('tournament:playersOut', outPlayerNumbers);
+        io.emit('tournament:lobby', {
           TournamentGames: filterTableForLobby(TournamentGames)
         });
         setTimeout(() => {
@@ -817,6 +870,11 @@ module.exports = (io, socket, TournamentGames) => {
     }, 1000);
   }
 
+  /**
+   * The next card
+   * @param {object} TournamentGame 
+   * @returns 
+   */
   function nextCard(TournamentGame) {
     console.log('next card');
     //init
@@ -853,7 +911,7 @@ module.exports = (io, socket, TournamentGames) => {
     }
       setTimeout(()=>{
 
-      io.to(TournamentGame.roomId).emit('sit:card', {
+      io.to(TournamentGame.roomId).emit('tournament:card', {
         tableCards: TournamentGame.tableCards,
         pot: TournamentGame.pot
       });
@@ -890,7 +948,7 @@ module.exports = (io, socket, TournamentGames) => {
         position
       );
       TournamentGame.allowedBet = allowedBet(TournamentGame, position);
-      io.to(TournamentGame.roomId).emit('sit:turn', {
+      io.to(TournamentGame.roomId).emit('tournament:turn', {
         position,
         time: 0,
         amount: TournamentGame.allowedBet
@@ -898,6 +956,12 @@ module.exports = (io, socket, TournamentGames) => {
     },1500);
   }
 
+  /**
+   * 
+   * @param {object} TournamentGame 
+   * @param {*} position 
+   * @returns 
+   */
   function nextTurn(TournamentGame, position) {
     const players = TournamentGame.players;
     let newPosition = getNextPlayer(TournamentGame, position);
@@ -931,7 +995,7 @@ module.exports = (io, socket, TournamentGames) => {
         newPosition
       );
       TournamentGame.allowedBet = allowedBet(TournamentGame, newPosition);
-      io.to(TournamentGame.roomId).emit('sit:turn', {
+      io.to(TournamentGame.roomId).emit('tournament:turn', {
         position: newPosition,
         time: 0,
         amount: TournamentGame.allowedBet
@@ -939,6 +1003,11 @@ module.exports = (io, socket, TournamentGames) => {
     }
   }
 
+  /**
+   * When a player stands
+   * @param {object} TournamentGame 
+   * @param {*} position 
+   */
   function standPlayer(TournamentGame, position) {
     TournamentGame.players[position].stand = true;
     TournamentGame.players[position].turn = false;
@@ -946,13 +1015,17 @@ module.exports = (io, socket, TournamentGames) => {
     TournamentGame.pot += TournamentGame.players[position].bet;
     TournamentGame.players[position].bet = 0;
     TournamentGame.players[position].totalBet = 0;
-    io.to(TournamentGame.roomId).emit('sit:stand', {
+    io.to(TournamentGame.roomId).emit('tournament:stand', {
       position
     });
   }
+  /**
+   * prepare the tournament
+   * @param {*} TournamentGame 
+   */
   function prepareTournamentGame(TournamentGame) {
     TournamentGame.ready--;
-    io.to(TournamentGame.roomId).emit('sit:ready', {
+    io.to(TournamentGame.roomId).emit('tournament:ready', {
       time: TournamentGame.ready
     });
     if (TournamentGame.ready <= 0) {
@@ -962,6 +1035,10 @@ module.exports = (io, socket, TournamentGames) => {
     }
   }
 
+  /**
+   * Setting the following Blind
+   * @param {*} TournamentGame 
+   */
   function setNextBlind(TournamentGame) {
     TournamentGame.blindStep++;
     TournamentGame.blinds = constants.sitBlindList[TournamentGame.blindSchedule][TournamentGame.blindStep].blinds;
@@ -972,12 +1049,17 @@ module.exports = (io, socket, TournamentGames) => {
     );
   }
 
+  /**
+   * Timeout on each of the turns
+   * @param {object} TournamentGame 
+   * @param {*} position 
+   */
   function turnTimeOut(TournamentGame, position) {
     TournamentGame.players[position].turnTime += TournamentGame.turnTime * 10;
     const player = TournamentGame.players[position];
     if (player.behavior && 1000 <= player.turnTime) {
       bet(TournamentGame.players, position, TournamentGame.bet);
-      io.to(TournamentGame.roomId).emit('sit:bet', {
+      io.to(TournamentGame.roomId).emit('tournament:bet', {
         position,
         bet: player.bet,
         balance: player.balance,
@@ -1001,7 +1083,7 @@ module.exports = (io, socket, TournamentGames) => {
         standPlayer(TournamentGame, position);
       }
 
-      io.to(TournamentGame.roomId).emit('sit:bet', {
+      io.to(TournamentGame.roomId).emit('tournament:bet', {
         position,
         bet: player.bet,
         balance: player.balance,
@@ -1016,7 +1098,7 @@ module.exports = (io, socket, TournamentGames) => {
         nextTurn(TournamentGame, position);
       }
     } else {
-      io.to(TournamentGame.roomId).emit('sit:turn', {
+      io.to(TournamentGame.roomId).emit('tournament:turn', {
         position,
         time: player.turnTime
       });
@@ -1029,6 +1111,13 @@ module.exports = (io, socket, TournamentGames) => {
     }
   }
 
+  /**
+   * Place a bet
+   * @param {*} players 
+   * @param {*} position 
+   * @param {*} amount 
+   * @returns 
+   */
   function bet(players, position, amount) {
     if (players[position] == null) return;
     if (players[position].balance <= amount) {
@@ -1041,6 +1130,10 @@ module.exports = (io, socket, TournamentGames) => {
     }
   }
 
+  /**
+   * First round
+   * @param {object} TournamentGame 
+   */
   function setFirstRound(TournamentGame) {
     TournamentGame.nonce =TournamentGame.nonce ?TournamentGame.nonce+1 : 0;
     TournamentGame.cards = generateCards(
@@ -1112,7 +1205,7 @@ module.exports = (io, socket, TournamentGames) => {
       TournamentGame.bigBlindNext = getNextPlayer(TournamentGame, position, false);
     }
     console.log('started');
-    io.to(TournamentGame.roomId).emit('sit:start', {
+    io.to(TournamentGame.roomId).emit('tournament:start', {
       TournamentGame: filterTableToShow(TournamentGame, null)
     });
     position = getNextPlayer(TournamentGame, position, false);
@@ -1126,13 +1219,18 @@ module.exports = (io, socket, TournamentGames) => {
     );
 
     TournamentGame.allowedBet = allowedBet(TournamentGame, position);
-    io.to(TournamentGame.roomId).emit('sit:turn', {
+    io.to(TournamentGame.roomId).emit('tournament:turn', {
       position,
       time: 0,
       amount: TournamentGame.allowedBet
     });
   }
 
+  /**
+   * The following round
+   * @param {object} TournamentGame 
+   * @returns 
+   */
   function setNextRound(TournamentGame) {
     TournamentGame.nonce++;
     TournamentGame.cards = generateCards(
@@ -1193,7 +1291,7 @@ module.exports = (io, socket, TournamentGames) => {
       position = getNextPlayer(TournamentGame, position, false);
       TournamentGame.bigBlindNext = position;
     }
-    io.to(TournamentGame.roomId).emit('sit:start', {
+    io.to(TournamentGame.roomId).emit('tournament:start', {
       TournamentGame: filterTableToShow(TournamentGame, null)
     });
 
@@ -1210,7 +1308,7 @@ module.exports = (io, socket, TournamentGames) => {
       position
     );
     TournamentGame.allowedBet = allowedBet(TournamentGame, position);
-    io.to(TournamentGame.roomId).emit('sit:turn', {
+    io.to(TournamentGame.roomId).emit('tournament:turn', {
       position,
       time: 0,
       amount: TournamentGame.allowedBet
@@ -1220,9 +1318,15 @@ module.exports = (io, socket, TournamentGames) => {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //socket event functions
   //
-  //We won't be using the createGame system as the backend will create the game. No user will create a game
+  //We won't be using the createGame system as the backend will create the game (for freerolls)
   //
   //
+  /**
+   * Creates the game
+   * @param {*} data 
+   * @param {*} callback 
+   * @returns 
+   */
   const createGame = async (data, callback) => {
     if (!socket.user) {
       callback({
@@ -1269,8 +1373,8 @@ module.exports = (io, socket, TournamentGames) => {
       });
       return;
     }
-    const TournamentGame = data;
-    const TournamentGameDB = new TournamentGame();
+    const TournamentGame= data;
+    const TournamentGameDB = new TournamentConGame();
     TournamentGameDB.name = data.name;
     TournamentGameDB.blindsSchedule = data.blindSchedule;
     TournamentGameDB.stack = data.startingStack;
@@ -1282,8 +1386,9 @@ module.exports = (io, socket, TournamentGames) => {
     TournamentGameDB.serverSeed = generateServerSeed();
     await TournamentGameDB.save();
     TournamentGame.id = TournamentGameDB.id;
+    console.log(TournamentGame.id)
 
-    TournamentGame.roomId = 'sit_' + TournamentGame.id;
+    TournamentGame.roomId = 'tournament_' + TournamentGame.id;
     TournamentGame.creator = { id: socket.id, username: socket.user.username };
     TournamentGame.playing = false;
     TournamentGame.tableCards = [];
@@ -1334,7 +1439,7 @@ module.exports = (io, socket, TournamentGames) => {
     TournamentGame.playTimeOut = setTimeout(removeTournamentGame, 
       1200*1000, TournamentGame.id);
     TournamentGames.push(TournamentGame);
-    io.emit('sit:lobby', {
+    io.emit('tournament:lobby', {
       TournamentGames: filterTableForLobby(TournamentGames)
     });
     callback({
@@ -1344,6 +1449,11 @@ module.exports = (io, socket, TournamentGames) => {
     });
   };
 
+  /**
+   * Occures when a player enters the game
+   * @param {*} id 
+   * @param {*} callback 
+   */
   const enterGame = async (id, callback) => {
     const TournamentGame = TournamentGames.find((ele) => ele.id == id);
     if (TournamentGame) {
@@ -1355,6 +1465,11 @@ module.exports = (io, socket, TournamentGames) => {
     }
   };
 
+  /**
+   * Showing a users cards
+   * @param {*} id 
+   * @param {*} callback 
+   */
   const showMyCards = async (id, callback) => {
     const TournamentGame = TournamentGames.find((ele) => ele.id == id);
     if (TournamentGame) {
@@ -1364,6 +1479,13 @@ module.exports = (io, socket, TournamentGames) => {
     }
   };
 
+  /**
+   * When a user joins a table
+   * @param {*} roomId 
+   * @param {*} password 
+   * @param {*} callback 
+   * @returns 
+   */
   const joinGame = async (roomId, password, callback) => {
     console.log('join');
     const TournamentGame = TournamentGames.find((ele) => ele.id == roomId);
@@ -1426,10 +1548,10 @@ module.exports = (io, socket, TournamentGames) => {
         console.log(e);
       }
       TournamentGame.players.splice(joined, 1);
-      io.emit('sit:lobby', {
+      io.emit('tournament:lobby', {
         TournamentGames: filterTableForLobby(TournamentGames)
       });
-      socket.to(TournamentGame.roomId).emit('sit:join', {
+      socket.to(TournamentGame.roomId).emit('tournament:join', {
         TournamentGame: filterTableToShow(TournamentGame, null)
       });
       const data = filterTableToShow(TournamentGame, socket);
@@ -1474,10 +1596,10 @@ module.exports = (io, socket, TournamentGames) => {
     }
     TournamentGame.players.push(player);
 
-    io.emit('sit:lobby', {
+    io.emit('tournament:lobby', {
       TournamentGames: filterTableForLobby(TournamentGames)
     });
-    socket.to(TournamentGame.roomId).emit('sit:join', {
+    socket.to(TournamentGame.roomId).emit('tournament:join', {
       TournamentGame: filterTableToShow(TournamentGame, null)
     });
     const data = filterTableToShow(TournamentGame, socket);
@@ -1493,7 +1615,7 @@ module.exports = (io, socket, TournamentGames) => {
       if (!TournamentGame.playing) {
         TournamentGame.playing = true;
         console.log(TournamentGames);
-        io.emit('sit:lobby', {
+        io.emit('tournament:lobby', {
           TournamentGames: filterTableForLobby(TournamentGames)
         });
         //game start
@@ -1504,6 +1626,12 @@ module.exports = (io, socket, TournamentGames) => {
     }
   };
 
+  /**
+   * Betting on a game
+   * @param {*} roomId 
+   * @param {*} bet 
+   * @returns 
+   */
   const betGame = async (roomId, bet) => {
     const TournamentGame = TournamentGames.find((ele) => ele.id == roomId);
     if (!TournamentGame) {
@@ -1593,7 +1721,7 @@ module.exports = (io, socket, TournamentGames) => {
           }
         }
       }
-      io.to(TournamentGame.roomId).emit('sit:bet', {
+      io.to(TournamentGame.roomId).emit('tournament:bet', {
         position,
         bet: player.bet,
         balance: player.balance,
@@ -1615,6 +1743,13 @@ module.exports = (io, socket, TournamentGames) => {
     }
   };
 
+  /**
+   * 
+   * @param {*} roomId 
+   * @param {*} behavior 
+   * @param {*} callback 
+   * @returns 
+   */
   const behaviorGame = async (roomId, behavior, callback) => {
     const TournamentGame = TournamentGames.find((ele) => ele.id == roomId);
     if (!TournamentGame) {
@@ -1625,6 +1760,12 @@ module.exports = (io, socket, TournamentGames) => {
     callback(behavior);
   };
 
+  /**
+   * When a user stands
+   * @param {*} roomId 
+   * @param {*} callback 
+   * @returns 
+   */
   const standGame = async (roomId, callback) => {
     const TournamentGame = TournamentGames.find((ele) => ele.id == roomId);
     if (!TournamentGame) {
@@ -1643,7 +1784,7 @@ module.exports = (io, socket, TournamentGames) => {
         TournamentGame.pot += player.bet;
         player.bet = 0;
         player.totalBet = 0;
-        socket.to(TournamentGame.roomId).emit('sit:stand', {
+        socket.to(TournamentGame.roomId).emit('tournament:stand', {
           position
         });
         callback(true);
@@ -1656,7 +1797,7 @@ module.exports = (io, socket, TournamentGames) => {
           nextTurn(TournamentGame, position);
         }
       } else {
-        socket.to(TournamentGame.roomId).emit('sit:sit', {
+        socket.to(TournamentGame.roomId).emit('tournament:sit', {
           position
         });
         callback(player.stand);
@@ -1664,6 +1805,12 @@ module.exports = (io, socket, TournamentGames) => {
     }
   };
 
+  /**
+   * When a user leaves the game
+   * @param {*} roomId 
+   * @param {*} callback 
+   * @returns 
+   */
   const leaveGame = async (roomId, callback) => {
     const TournamentGame = TournamentGames.find((ele) => ele.id == roomId);
     if (!TournamentGame) {
@@ -1679,10 +1826,10 @@ module.exports = (io, socket, TournamentGames) => {
       TournamentGame.pot += player.bet;
 
       TournamentGame.players[position] = null;
-      socket.to(TournamentGame.roomId).emit('sit:leave', {
+      socket.to(TournamentGame.roomId).emit('tournament:leave', {
         position
       });
-      io.emit('sit:lobby', {
+      io.emit('tournament:lobby', {
         TournamentGames: filterTableForLobby(TournamentGames)
       });
       callback(true);

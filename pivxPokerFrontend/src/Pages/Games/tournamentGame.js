@@ -33,7 +33,7 @@ import Chip from "../../Components/Chip";
 import gameStyle from "../../jss/pages/cashGameStyle";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { chips, ranks, sitBlindList } from "../../shared/constants";
+import { chips, ranks, tournamentBlindList } from "../../shared/constants";
 import Modal from "@material-ui/core/Modal";
 import Fade from "@material-ui/core/Fade";
 import Grid from "@material-ui/core/Grid";
@@ -73,7 +73,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 const useStyles = makeStyles(gameStyle);
-const SitGame = ({
+const TournamentGames = ({
   match,
   history,
   status,
@@ -117,7 +117,7 @@ const SitGame = ({
     history.push("/lobby");
   };
   const logout = () => {
-    socket.emit("sit:leave", match.params.room, (res) => {
+    socket.emit("tournament:leave", match.params.room, (res) => {
       if (res == true) {
         LogOutSuccess();
         history.push("/");
@@ -126,7 +126,7 @@ const SitGame = ({
   };
   const changeStand = () => {
     setStandMenu(null);
-    socket.emit("sit:stand", match.params.room, (res) => {
+    socket.emit("tournament:stand", match.params.room, (res) => {
       setTable((table) => {
         const players = table.players.map((ele) => ele);
         players[mySeat].stand = res;
@@ -139,7 +139,7 @@ const SitGame = ({
   };
   const leaveTable = () => {
     setStandMenu(null);
-    socket.emit("sit:leave", match.params.room, (res) => {
+    socket.emit("tournament:leave", match.params.room, (res) => {
       if (res == true) {
         setTable((table) => {
           const players = table.players.map((ele) => ele);
@@ -155,7 +155,7 @@ const SitGame = ({
   };
   const copyLink = () => {
     const tmp_tag = document.createElement("input");
-    tmp_tag.value = apiConfig.app + "/games/sit/" + table.id;
+    tmp_tag.value = apiConfig.app + "/games/tournament/" + table.id;
     reference.current.appendChild(tmp_tag);
     tmp_tag.select();
     document.execCommand("copy");
@@ -163,7 +163,7 @@ const SitGame = ({
     handleToast("Address copied!", success);
   };
   const setBehavior = (behavior) => {
-    socket.emit("sit:behavior", match.params.room, behavior, (behavior) => {
+    socket.emit("tournament:behavior", match.params.room, behavior, (behavior) => {
       setTable((table) => {
         const newPlayers = JSON.parse(JSON.stringify(table.players));
         newPlayers[mySeat].behavior = behavior;
@@ -175,18 +175,18 @@ const SitGame = ({
     });
   };
   const bet = (status, amount) => {
-    socket.emit("sit:bet", match.params.room, { status, amount });
+    socket.emit("tournament:bet", match.params.room, { status, amount });
   };
   const joinTable = () => {
     if (!credential.loginToken) {
       handleToast("Please login to join the game!");
       return;
     }
-    socket.emit("sit:join", match.params.room, password, (res) => {
+    socket.emit("tournament:join", match.params.room, password, (res) => {
       if (res.status) {
-        setTable(res.sitGame);
+        setTable(res.tournamentGames);
         PIVXChange(res.pivx);
-        console.log("sit:join emit");
+        console.log("tournament:join emit");
       } else handleToast(res.message);
     });
   };
@@ -197,7 +197,7 @@ const SitGame = ({
     if (e.target.input_message.value != "") {
       socket.emit(
         "chat:send",
-        "sit_" + match.params.room,
+        "tournament_" + match.params.room,
         e.target.input_message.value
       );
       setMessage("");
@@ -299,47 +299,48 @@ const SitGame = ({
           PIVXChange(res.pivx);
         }
       });
-      socket.emit("sit:enter", match.params.room, (res) => {
-        setTable(res.sitGame);
-        let id = res.sitGame.players.findIndex(
+      socket.emit("tournament:enter", match.params.room, (res) => {
+        console.log(res)
+        setTable(res.TournamentGame);
+        let id = res.TournamentGame.players.findIndex(
           (ele) => ele != null && ele.user.id == credential.loginUserId
         );
 
         console.log("enter emit");
-        console.log(res.sitGame.tableCards);
+        console.log(res.TournamentGame.tableCards);
         if (id > -1) {
           setMySeat(id);
-          if (res.sitGame.allowedBet) {
-            setCall(res.sitGame.allowedBet.call);
-            setMinRaise(res.sitGame.allowedBet.minRaise);
-            setMaxRaise(res.sitGame.allowedBet.maxRaise);
-            setRaise(res.sitGame.allowedBet.minRaise);
-            setCallStatus(res.sitGame.allowedBet.status);
+          if (res.TournamentGame.allowedBet) {
+            setCall(res.TournamentGame.allowedBet.call);
+            setMinRaise(res.TournamentGame.allowedBet.minRaise);
+            setMaxRaise(res.TournamentGame.allowedBet.maxRaise);
+            setRaise(res.TournamentGame.allowedBet.minRaise);
+            setCallStatus(res.TournamentGame.allowedBet.status);
           }
         }
       });
       socket.on("connect_error", (err) => {
-        console.error("sit:error");
+        console.error("tournament:error");
         console.error(err.message);
       });
-      socket.on("sit:join", ({ sitGame }) => {
-        console.log("sit join");
-        console.log(sitGame);
+      socket.on("tournament:join", ({ tournamentGames }) => {
+        console.log("tournament join");
+        console.log(tournamentGames);
         setTable((table) => {
           return {
-            ...sitGame,
+            ...tournamentGames,
           };
         });
       });
-      socket.on("sit:start", ({ sitGame }) => {
-        console.log("sit start");
-        console.log(sitGame.players);
-        let id = sitGame.players.findIndex(
+      socket.on("tournament:start", ({ tournamentGames }) => {
+        console.log("tournament start");
+        console.log(tournamentGames.players);
+        let id = tournamentGames.players.findIndex(
           (ele) => ele != null && ele.user.id == credential.loginUserId
         );
-        if (id > -1 && !sitGame.players[id].fold) {
+        if (id > -1 && !tournamentGames.players[id].fold) {
           setMySeat(id);
-          socket.emit("sit:showMyCards", match.params.room, ({ cards }) => {
+          socket.emit("tournament:showMyCards", match.params.room, ({ cards }) => {
             setTable((table) => {
               const players = JSON.parse(JSON.stringify(table.players));
               console.log(cards);
@@ -352,12 +353,12 @@ const SitGame = ({
             });
           });
         }
-        setTable(sitGame);
+        setTable(tournamentGames);
 
         setProgress(100);
       });
-      socket.on("sit:turn", ({ position, time, amount }) => {
-        console.log("sit:turn");
+      socket.on("tournament:turn", ({ position, time, amount }) => {
+        console.log("tournament:turn");
         setTable((table) => {
           const newPlayers = table.players.map((ele) => {
             if (ele != null) {
@@ -382,9 +383,9 @@ const SitGame = ({
         });
       });
       socket.on(
-        "sit:bet",
+        "tournament:bet",
         ({ position, bet, balance, fold, allIn, stand, pot, raise, call }) => {
-          console.log("sit:bet");
+          console.log("tournament:bet");
           console.log({
             position,
             bet,
@@ -416,11 +417,11 @@ const SitGame = ({
           setEventPositions([position]);
         }
       );
-      socket.on("sit:stand", ({ position }) => {
+      socket.on("tournament:stand", ({ position }) => {
         setTable((table) => {
           const newPlayers = JSON.parse(JSON.stringify(table.players));
           newPlayers[position].stand = 1;
-          console.log("sit:stand");
+          console.log("tournament:stand");
           console.log(position);
           console.log(newPlayers);
           return {
@@ -430,7 +431,7 @@ const SitGame = ({
         });
         setEventPositions([position]);
       });
-      socket.on("sit:card", ({ tableCards, pot }) => {
+      socket.on("tournament:card", ({ tableCards, pot }) => {
         console.log(tableCards);
         setTimeout(() => {
           setEventPositions([]);
@@ -453,45 +454,45 @@ const SitGame = ({
           };
         });
       });
-      socket.on("sit:open", (sitGame) => {
+      socket.on("tournament:open", (tournamentGames) => {
         console.log("open");
-        setTable(sitGame);
+        setTable(tournamentGames);
       });
-      socket.on("sit:result", (sitGame, status0, status1) => {
+      socket.on("tournament:result", (tournamentGames, status0, status1) => {
         console.log("result");
-        setTable(sitGame);
+        setTable(tournamentGames);
         setWinnerText(status0);
         setResultText(status1);
       });
 
-      socket.on("sit:closed", () => {
-        console.log("sit:closed");
+      socket.on("tournament:closed", () => {
+        console.log("tournament:closed");
         history.push("/lobby");
       });
-      socket.on("sit:sit", ({ position }) => {
+      socket.on("tournament:sit", ({ position }) => {
         setTable((table) => {
           const newPlayers = JSON.parse(JSON.stringify(table.players));
           newPlayers[position].stand = false;
-          console.log("sit:sit");
+          console.log("tournament:sit");
           return {
             ...table,
             players: newPlayers,
           };
         });
       });
-      socket.on("sit:leave", ({ position }) => {
+      socket.on("tournament:leave", ({ position }) => {
         setTable((table) => {
           const newPlayers = JSON.parse(JSON.stringify(table.players));
           newPlayers[position] = null;
-          console.log("sit:leave");
+          console.log("tournament:leave");
           return {
             ...table,
             players: newPlayers,
           };
         });
       });
-      socket.on("sit:third", (positions) => {
-        console.log("sit:third");
+      socket.on("tournament:third", (positions) => {
+        console.log("tournament:third");
         setTable((table) => {
           for (let i = 0; i < positions.length; i++) {
             if (table.players[positions[i]].user.id == credential.loginUserId) {
@@ -504,8 +505,8 @@ const SitGame = ({
           };
         });
       });
-      socket.on("sit:second", (positions) => {
-        console.log("sit:second");
+      socket.on("tournament:second", (positions) => {
+        console.log("tournament:second");
         setTable((table) => {
           for (let i = 0; i < positions.length; i++) {
             if (table.players[positions[i]].user.id == credential.loginUserId) {
@@ -518,8 +519,8 @@ const SitGame = ({
           };
         });
       });
-      socket.on("sit:first", (position) => {
-        console.log("sit:first");
+      socket.on("tournament:first", (position) => {
+        console.log("tournament:first");
         setClosed(true);
         setTable((table) => {
           if (table.players[position].user.id == credential.loginUserId) {
@@ -533,8 +534,8 @@ const SitGame = ({
           history.push("/lobby");
         }, 30000);
       });
-      socket.on("sit:playersOut", (positions) => {
-        console.log("sit:out");
+      socket.on("tournament:playersOut", (positions) => {
+        console.log("tournament:out");
         setTable((table) => {
           const newPlayers = table.players.map((ele) => {
             return ele;
@@ -550,7 +551,7 @@ const SitGame = ({
           };
         });
       });
-      socket.on("sit:ready", ({ time }) => {
+      socket.on("tournament:ready", ({ time }) => {
         console.log(time);
         setTable((table) => {
           return {
@@ -1242,7 +1243,7 @@ const SitGame = ({
                 <Grid container spacing={3}>
                   <TableContainer
                     component={Paper}
-                    className={classes.tableContainer}
+                    className={classes.tableContainer}nament
                   >
                     <Table
                       className={classes.table}
@@ -1258,7 +1259,7 @@ const SitGame = ({
                         </StyledTableRow>
                       </TableHead>
                       <TableBody>
-                        {sitBlindList[table.blindSchedule].map((row, key) => (
+                        {tournamentBlindList[table.blindSchedule].map((row, key) => (
                           <StyledTableRow key={key}>
                             <StyledTableCell component="th" scope="row">
                               {showKilo(row.blinds)}
@@ -1612,7 +1613,7 @@ const SitGame = ({
                         </StyledTableRow>
                       </TableHead>
                       <TableBody>
-                        {sitBlindList[table.blindSchedule].map((row, key) => (
+                        {tournamentBlindList[table.blindSchedule].map((row, key) => (
                           <StyledTableRow key={key}>
                             <StyledTableCell component="th" scope="row">
                               {showKilo(row.blinds)}
@@ -1815,5 +1816,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(SitGame)
+  connect(mapStateToProps, mapDispatchToProps)(TournamentGames)
 );

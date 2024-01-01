@@ -3,7 +3,13 @@ const User = require('../models/user');
 const Ticket=require('../models/ticket');
 const { body, validationResult } = require('express-validator');
 
-//post feedback
+/**
+ * post feedback
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.postFeedback = async (req, res, next) => {
   const result = validationResult(req);
   if (!result.isEmpty()) {

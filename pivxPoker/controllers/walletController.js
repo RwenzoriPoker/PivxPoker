@@ -5,7 +5,12 @@ const Recharge = require('../models/recharge');
 const { getNewAddress, getNewShieldAddress, sendToAddress, getTransaction } = require('../utils/pivx');
 const { verifyPassword } = require('../utils/authentication');
 
-//get wallet address
+/**
+ * get wallet address
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.getWallet = async (req, res, next) => {
   // console.log(req.user);
   const user = await User.findById(req.user.id);
@@ -24,7 +29,13 @@ exports.getWallet = async (req, res, next) => {
   await user.save();
   res.status(200).json({ wallet: user.address });
 };
-//generate the btc new address
+
+/**
+ * generate the btc new address
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.getNewAddress = async (req, res, next) => {
   const user = await User.findById(req.user.id);
   try {
@@ -48,7 +59,12 @@ exports.getNewAddress = async (req, res, next) => {
   }
 };
 
-//get Shielded Address wallet address
+/**
+ * get Shielded Address wallet address
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.getShieldWallet = async (req, res, next) => {
   // console.log(req.user);
   const user = await User.findById(req.user.id);
@@ -67,7 +83,14 @@ exports.getShieldWallet = async (req, res, next) => {
   await user.save();
   res.status(200).json({ wallet: user.shieldaddress });
 };
-//generate the btc Shielded Address new address
+
+
+/**
+ * generate the btc Shielded Address new address
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.getNewShieldAddress = async (req, res, next) => {
   const user = await User.findById(req.user.id);
   try {
@@ -91,7 +114,13 @@ exports.getNewShieldAddress = async (req, res, next) => {
   }
 };
 
-
+/**
+ * Occures when someone submits a withdrawl request
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.postWithdrawal = async (req, res, next) => {
   const amount = req.body.pivx;
   const address = req.body.wallet;
@@ -150,6 +179,13 @@ exports.postWithdrawal = async (req, res, next) => {
   } else return res.status(401).json({ error: 'Password incorrect!' });
 };
 
+/**
+ * When a admin widthraw request is submitted
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getAdminWithdrawal = async (req, res, next) => {
   const page = req.params.page;
   let withdrawals, total;
@@ -182,6 +218,13 @@ exports.getAdminWithdrawal = async (req, res, next) => {
   return res.status(200).json({ data: res_data, page, last_page: Math.ceil(total / 20) });
 };
 
+/**
+ * removes the adminwithdrawl
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.deleteAdminWithdrawal = async (req, res, next) => {
   const withdrawal=await Withdrawal.findById(req.params.id);
   await User.findByIdAndUpdate(
@@ -198,6 +241,13 @@ exports.deleteAdminWithdrawal = async (req, res, next) => {
 
 };
 
+/**
+ * removes admin recharge
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.deleteAdminRecharge = async (req, res, next) => {
   const recharge=await Recharge.findById(req.params.id);
   await User.findByIdAndUpdate(
@@ -214,6 +264,13 @@ exports.deleteAdminRecharge = async (req, res, next) => {
 
 };
 
+/**
+ * Shows admin recharges
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getAdminRecharge = async (req, res, next) => {
   const page = req.params.page;
   const status = req.params.status ? req.params.status : 2;
@@ -253,6 +310,13 @@ exports.getAdminRecharge = async (req, res, next) => {
   });
 };
 
+/**
+ * Shows the withdrawl list
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getWithdrawalList = async (req, res, next) => {
   const page = req.params.page;
   const withdrawals = await Withdrawal.find({ user: req.user.id });
@@ -272,6 +336,13 @@ exports.getWithdrawalList = async (req, res, next) => {
   return res.status(200).json(data);
 };
 
+/**
+ * Get the recharge list
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getRechargeList = async (req, res, next) => {
   const page = req.params.page;
   const data=[];
@@ -290,12 +361,26 @@ exports.getRechargeList = async (req, res, next) => {
   return res.status(200).json(data);
 };
 
+/**
+ * Get the balance for the user
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.getBalance = async (req, res, next) => {
   var user = await User.findById(req.user.id);
 
   return res.status(200).json({ balance: user ? user.pivx : 0 });
 };
 
+/**
+ * change the balance of a user
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.putBalance = async (req, res, next) => {
   var user = await User.findById(req.params.user);
   user.pivx=req.body.pivx;

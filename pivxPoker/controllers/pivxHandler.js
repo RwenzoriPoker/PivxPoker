@@ -18,6 +18,12 @@ const rpc = new RpcClient(config);
 sock.connect(addr);
 sock.subscribe('rawtx');
 let txid="";
+/**
+ * This is the main socket that handles the pivx daemon
+ * @param {*} io 
+ * @param {*} socket 
+ * @param {array} users 
+ */
 module.exports = (io, socket, users) => {
   //read transaction and deposit
   sock.on('message', function (topic, message) {

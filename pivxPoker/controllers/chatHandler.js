@@ -15,7 +15,15 @@ module.exports = (io, socket, users) => {
   //     });
   // };
 
+  /**
+   * Socket event for when a new message occures
+   * @param {*} room 
+   * @param {*} message 
+   */
   const newMessage = (room, message) => {
+    console.log("-new message-")
+    console.log(room)
+    console.log(message)
     if(socket.user){      
       io.to(room).emit('chat:receive', {
         sender: {

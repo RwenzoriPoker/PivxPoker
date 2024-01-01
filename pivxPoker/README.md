@@ -35,7 +35,7 @@ https://github.com/nodesource/distributions/blob/master/README.md
 
 ```
 sudo apt-get install build-essential
-sudo apt install node-pre-gyp
+sudo apt install node-pre-gyp 
 ```
 `npm i` 
 If you have issues purge the package-lock and any node_modules you have and try again
@@ -85,3 +85,18 @@ or
 ` node index.js `
 ## production
 ` npm run build `
+
+
+Tests are handled with jest and all code is under the /test/ folder
+
+The uploads folder needs to include an avatars file otherwise avatars will not work and it won't give you a good error to understand why they aren't working.
+
+Database is mongoose and all the modle files are stored /models/
+
+The utils file is a little under utilized but includes a bunch of files that can be helpful and sometimes get included in other areas of the site.
+
+The /configs/ file contains only Rakes at this point in an array of objects which connects the blinds to the rakes for a match
+
+When creating a new frontend you need to put the build file from the frontend into this the pivxPoker file, that is what the server serves to the user
+
+For hooking up the discord notifications you need to set the DISCORD_WEBHOOK_NEWGAME with the webhook

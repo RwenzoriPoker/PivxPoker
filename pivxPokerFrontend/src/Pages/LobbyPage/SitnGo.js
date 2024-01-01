@@ -153,8 +153,9 @@ const SitnGoTable = (props) => {
   }, [tableSize, buyIn]);
 
   useEffect(() => {
+    console.log(props)
     setTableItems(props.sitGames);
-    console.log(props.sitGames);
+    //console.log(props.sitGames);
   }, [props.sitGames]);
 
   useEffect(() => {
