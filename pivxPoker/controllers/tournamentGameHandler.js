@@ -542,7 +542,7 @@ module.exports = (io, socket, TournamentGames) => {
         } else io.to(TournamentGame.roomId).emit('tournament:playersOut', outPlayerNumbers);
 
         io.to(TournamentGame.roomId).emit(
-          'sit:first',
+          'tournament:first',
           TournamentGame.players.findIndex((ele) => ele != null)
         );
         //finish the sit game
@@ -784,7 +784,7 @@ module.exports = (io, socket, TournamentGames) => {
         } else io.to(TournamentGame.roomId).emit('tournament:playersOut', outPlayerNumbers);
 
         io.to(TournamentGame.roomId).emit(
-          'sit:first',
+          'tournament:first',
           TournamentGame.players.findIndex((ele) => ele != null)
         );
         //finish the sit game
@@ -805,7 +805,7 @@ module.exports = (io, socket, TournamentGames) => {
       } else if (TournamentGame.players.filter((ele) => ele != null).length == 2) {
         if (TournamentGame.thirdPlace > 0) {
           const financial = {};
-          financial.type = 'Sit&Go';
+          financial.type = 'TournamentGame';
           financial.amount = Math.floor(TournamentGame.secondPlace / outPlayers.length);
           let bonus=Math.floor(financial.amount/200);
           financial.details = '3rd Place';
@@ -1457,7 +1457,7 @@ module.exports = (io, socket, TournamentGames) => {
   const enterGame = async (id, callback) => {
     const TournamentGame = TournamentGames.find((ele) => ele.id == id);
     if (TournamentGame) {
-      if (!socket.rooms.has('sit_' + id)) socket.join('sit_' + id);
+      if (!socket.rooms.has('tournament_' + id)) socket.join('tournament_' + id);
       const data = filterTableToShow(TournamentGame, socket);
       callback({
         TournamentGame: data

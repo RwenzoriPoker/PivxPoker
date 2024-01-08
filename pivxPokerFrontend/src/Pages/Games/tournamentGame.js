@@ -73,7 +73,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 const useStyles = makeStyles(gameStyle);
-const TournamentGames = ({
+const TournamentGamesC = ({
   match,
   history,
   status,
@@ -183,8 +183,12 @@ const TournamentGames = ({
       return;
     }
     socket.emit("tournament:join", match.params.room, password, (res) => {
+
+      console.log("=====JOIN=====")
+      console.log(res.status)
+      console.log(res.TournamentGame)
       if (res.status) {
-        setTable(res.tournamentGames);
+        setTable(res.TournamentGame);
         PIVXChange(res.pivx);
         console.log("tournament:join emit");
       } else handleToast(res.message);
@@ -307,7 +311,8 @@ const TournamentGames = ({
         );
 
         console.log("enter emit");
-        console.log(res.TournamentGame.tableCards);
+        console.log(id)
+        console.log(res.TournamentGame.allowedBet);
         if (id > -1) {
           setMySeat(id);
           if (res.TournamentGame.allowedBet) {
@@ -323,22 +328,22 @@ const TournamentGames = ({
         console.error("tournament:error");
         console.error(err.message);
       });
-      socket.on("tournament:join", ({ tournamentGames }) => {
+      socket.on("tournament:join", ({ TournamentGame }) => {
         console.log("tournament join");
-        console.log(tournamentGames);
+        console.log(TournamentGame);
         setTable((table) => {
           return {
-            ...tournamentGames,
+            ...TournamentGame,
           };
         });
       });
-      socket.on("tournament:start", ({ tournamentGames }) => {
+      socket.on("tournament:start", ({ TournamentGame }) => {
         console.log("tournament start");
-        console.log(tournamentGames.players);
-        let id = tournamentGames.players.findIndex(
+        console.log(TournamentGame.players);
+        let id = TournamentGame.players.findIndex(
           (ele) => ele != null && ele.user.id == credential.loginUserId
         );
-        if (id > -1 && !tournamentGames.players[id].fold) {
+        if (id > -1 && !TournamentGame.players[id].fold) {
           setMySeat(id);
           socket.emit("tournament:showMyCards", match.params.room, ({ cards }) => {
             setTable((table) => {
@@ -353,7 +358,7 @@ const TournamentGames = ({
             });
           });
         }
-        setTable(tournamentGames);
+        setTable(TournamentGame);
 
         setProgress(100);
       });
@@ -454,13 +459,13 @@ const TournamentGames = ({
           };
         });
       });
-      socket.on("tournament:open", (tournamentGames) => {
+      socket.on("tournament:open", (TournamentGame) => {
         console.log("open");
-        setTable(tournamentGames);
+        setTable(TournamentGame);
       });
-      socket.on("tournament:result", (tournamentGames, status0, status1) => {
+      socket.on("tournament:result", (TournamentGame, status0, status1) => {
         console.log("result");
-        setTable(tournamentGames);
+        setTable(TournamentGame);
         setWinnerText(status0);
         setResultText(status1);
       });
@@ -1816,5 +1821,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(TournamentGames)
+  connect(mapStateToProps, mapDispatchToProps)(TournamentGamesC)
 );

@@ -306,7 +306,8 @@ const SitGame = ({
         );
 
         console.log("enter emit");
-        console.log(res.sitGame.tableCards);
+        console.log(id);
+        console.log(res.sitGame.allowedBet);
         if (id > -1) {
           setMySeat(id);
           if (res.sitGame.allowedBet) {
