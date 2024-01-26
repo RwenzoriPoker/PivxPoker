@@ -1021,9 +1021,11 @@ module.exports = (io, socket, TournamentGames) => {
   }
   /**
    * prepare the tournament
+   * tournamentGame.ready is just a count down for when it will start
    * @param {*} TournamentGame 
    */
   function prepareTournamentGame(TournamentGame) {
+    console.log(TournamentGame.ready)
     TournamentGame.ready--;
     io.to(TournamentGame.roomId).emit('tournament:ready', {
       time: TournamentGame.ready
@@ -1377,6 +1379,7 @@ module.exports = (io, socket, TournamentGames) => {
     const TournamentGameDB = new TournamentConGame();
     TournamentGameDB.name = data.name;
     TournamentGameDB.blindsSchedule = data.blindSchedule;
+    TournamentGameDB.startTime = data.startTime;
     TournamentGameDB.stack = data.startingStack;
     TournamentGameDB.first = data.firstPlace;
     TournamentGameDB.second = data.secondPlace;
@@ -1387,6 +1390,8 @@ module.exports = (io, socket, TournamentGames) => {
     await TournamentGameDB.save();
     TournamentGame.id = TournamentGameDB.id;
     console.log(TournamentGame.id)
+    console.log(data.startTime)
+    console.log(TournamentGameDB.startTime)
 
     TournamentGame.roomId = 'tournament_' + TournamentGame.id;
     TournamentGame.creator = { id: socket.id, username: socket.user.username };
@@ -1436,8 +1441,10 @@ module.exports = (io, socket, TournamentGames) => {
 
     TournamentGame.players.push(player);
 
-    TournamentGame.playTimeOut = setTimeout(removeTournamentGame, 
-      1200*1000, TournamentGame.id);
+    //This is for removing the game if there isn't anyone playing in time, this won't be needed because we
+    //are using a time for the start
+    // TournamentGame.playTimeOut = setTimeout(removeTournamentGame, 
+    //   1200*1000, TournamentGame.id);
     TournamentGames.push(TournamentGame);
     io.emit('tournament:lobby', {
       TournamentGames: filterTableForLobby(TournamentGames)
@@ -1610,20 +1617,40 @@ module.exports = (io, socket, TournamentGames) => {
       pivx:socket.user.pivx
     });
 
-    if (TournamentGame.players.length == TournamentGame.tableSize) {
-      //game start
-      if (!TournamentGame.playing) {
-        TournamentGame.playing = true;
-        console.log(TournamentGames);
-        io.emit('tournament:lobby', {
-          TournamentGames: filterTableForLobby(TournamentGames)
-        });
-        //game start
-        TournamentGame.ready = 2;
-        clearTimeout(TournamentGame.playTimeOut);
-        setTimeout(prepareTournamentGame, 1000, TournamentGame);
+    //If there are enough players to start the tournament start it
+    //TODO: add in the check for time to start and emit a game start or not enough people joined
+    let checkAgainValue = 1000
+    startUpGameCheck()
+    function startUpGameCheck() {
+      console.log("ran check for tournament")
+      let date1 = new Date(TournamentGame.startTime).getTime();
+      let date2 = new Date().getTime();
+      console.log(date1 + "  " + date2)
+      if(date1 < date2){
+        console.log("Date older")
+        if (TournamentGame.players.length >= TournamentGame.tableSize) {
+          //game start
+          if (!TournamentGame.playing) {
+            TournamentGame.playing = true;
+            console.log(TournamentGames);
+            io.emit('tournament:lobby', {
+              TournamentGames: filterTableForLobby(TournamentGames)
+            });
+            //game start
+            TournamentGame.ready = 2;
+            clearTimeout(TournamentGame.playTimeOut);
+            setTimeout(prepareTournamentGame, 1000, TournamentGame);
+          }
+        }else{
+          //remove if not enough players for one table
+          removeTournamentGame(TournamentGame.id)
+        }
+      }else{
+        checkAgainValue = (date1 - date2)/2
+        console.log(checkAgainValue)
+        setTimeout(startUpGameCheck, checkAgainValue);
       }
-    }
+    };
   };
 
   /**

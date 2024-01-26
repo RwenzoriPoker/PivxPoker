@@ -67,7 +67,7 @@ exports.getVisit = async (req, res, next) => {
 };
 
 /**
- * 
+ * Returns the wallet information
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -128,7 +128,7 @@ exports.patchTicket = async (req, res, next) => {
 };
 
 /**
- * user Admin
+ * Returns a list of users and some information about them
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -168,7 +168,7 @@ exports.getUsers = async (req, res, next) => {
 };
 
 /**
- * 
+ * returns specific details about a user
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -215,7 +215,7 @@ exports.putPointDown = async (req, res, next) => {
   return res.status(200).json(user);
 };
 /**
- * 
+ * Removes a user from database
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -267,7 +267,7 @@ exports.postProfitWithdraw = async (req, res, next) => {
 };
 
 /**
- * 
+ * Writes new rakes to the rake system
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -299,7 +299,7 @@ exports.postRakes = async (req, res, next) => {
 };
 
 /**
- * 
+ * Returns information about a specific game
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -337,7 +337,7 @@ exports.getTableData = async (req, res, next) => {
 };
 
 /**
- * 
+ * Just a simple test to make sure connections and everything else works
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 

@@ -15,7 +15,7 @@ button:focus {
    box-sizing: border-box;
    font-family: "Montserrat";
    font-weight: bold;
-   color: white;
+   color: rgb(180, 180, 180);
 }
 
 

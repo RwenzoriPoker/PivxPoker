@@ -707,7 +707,7 @@ module.exports = (io, socket, cashGames) => {
     setTimeout(setNextRound, 3500, cashGame);
   }
   /**
-   * 
+   * This happens when another card needs to be played
    * @param {object} cashGame 
    * @returns 
    */
@@ -794,7 +794,7 @@ module.exports = (io, socket, cashGames) => {
   }
 
   /**
-   * 
+   * Called for a new player turn
    * @param {object} cashGame 
    * @param {*} position 
    * @returns 
@@ -843,7 +843,7 @@ module.exports = (io, socket, cashGames) => {
   }
 
   /**
-   * 
+   * Called when a player stands in a game
    * @param {object} cashGame 
    * @param {*} position 
    */
@@ -861,7 +861,7 @@ module.exports = (io, socket, cashGames) => {
   }
 
   /**
-   * 
+   * Called in the event of a Time out during a players turn
    * @param {object} cashGame 
    * @param {*} position 
    */
@@ -921,7 +921,7 @@ module.exports = (io, socket, cashGames) => {
   }
 
   /**
-   * 
+   * Called when a player bets
    * @param {*} players 
    * @param {*} position 
    * @param {*} amount 
@@ -938,7 +938,7 @@ module.exports = (io, socket, cashGames) => {
   }
 
   /**
-   * 
+   * Called to setup the first round
    * @param {object} cashGame 
    */
   function setFirstRound(cashGame) {
@@ -1046,7 +1046,7 @@ module.exports = (io, socket, cashGames) => {
   }
 
   /**
-   * 
+   * Called at the end of a hand
    * @param {object} cashGame 
    */
   function setNextRound(cashGame) {

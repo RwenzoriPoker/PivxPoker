@@ -20,6 +20,12 @@ import Paper from "@material-ui/core/Paper";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { useHistory } from "react-router-dom";
+//datePicker
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
 
 import {
   blindsList,
@@ -122,6 +128,7 @@ const TournamentTable = (props) => {
   const [sort, setSort] = useState("");
   const [turnTime, setTurnTime] = useState(turnTimeList[0]);
   const [tableSize, setTableSize] = useState(9);
+  const [startTime, setStartTime] = useState(Date.UTC())
   const [startingStack, setStartingStack] = useState(500);
   const [limit, setLimit] = useState(false);
   const [blindSchedule, setBlindSchedule] = useState(4);
@@ -275,6 +282,7 @@ const TournamentTable = (props) => {
     console.log({
       name,
       turnTime,
+      startTime,
       tableSize,
       startingStack,
       blindSchedule,
@@ -291,6 +299,7 @@ const TournamentTable = (props) => {
       {
         name,
         turnTime,
+        startTime,
         tableSize,
         startingStack,
         blindSchedule,
@@ -465,6 +474,28 @@ const TournamentTable = (props) => {
                 </FormControl>
               </Grid>
             </Grid>
+
+            <Grid container spacing={3}>
+              <Grid item xs={4} className={classes.modal_label}>
+                Start Time:
+              </Grid>
+              <Grid item xs={8} className={classes.modal_field}>
+                <FormControl className={classes.formControl}>
+                  {/* <div style={{ paddingTop:"50px",minWidth: "520px" }}>
+                    <DateTimePicker  id="demo-startTime-select" labelId="demo-startTime-select-label" value={startTime}  onChange={(e) => setStartTime(e.target.value)} />
+                  </div> */}
+                  <div>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['DateTimePicker']}>
+                        <DateTimePicker label="Set start date"
+                        onChange={(e => setStartTime(e))} />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </div>
+                </FormControl>
+              </Grid>
+            </Grid>
+
 
             <Grid container spacing={3}>
               <Grid item xs={4} className={classes.modal_label}>

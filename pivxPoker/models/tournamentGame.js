@@ -5,6 +5,7 @@ const Long = mongoose.Schema.Types.Long;
 const TournamentGameSchema = new Schema({
   name: { type: String, required: true },
   blindsSchedule: { type: Number, required: true },
+  startTime:{ type:Date, required: true},
   stack: { type: Long, required: true },
   first: { type: Long },
   second: { type: Long },

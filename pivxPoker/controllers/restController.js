@@ -89,18 +89,18 @@ exports.signup = async (req, res) => {
         });
       } else {
         return res.status(400).json({
-          message: 'There was a problem creating your account.'
+          message: 'There was a problem creating your account.1'
         });
       }
     } else {
       return res.status(400).json({
-        message: 'There was a problem creating your account.'
+        message: 'There was a problem creating your account.2'
       });
     }
   } catch (error) {
     console.log(error);
     return res.status(400).json({
-      message: 'There was a problem creating your account.'
+      message: 'There was a problem creating your account.3'
     });
   }
 };
