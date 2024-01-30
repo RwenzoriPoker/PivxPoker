@@ -6,6 +6,7 @@ const { generateServerSeed, sha256, generateCards } = require('../utils/fair');
 const Card = require('../utils/cards');
 const solver = require('../utils/solver');
 const fs = require("fs");
+const tournamentGame = require('../models/tournamentGame');
 var sitRakes;
 try {
   const jsonString = fs.readFileSync(__dirname+"/../uploads/configs/sitRakes.json");
@@ -1031,6 +1032,37 @@ module.exports = (io, socket, TournamentGames) => {
       time: TournamentGame.ready
     });
     if (TournamentGame.ready <= 0) {
+      console.log("Tournament Nonce")
+      console.log(TournamentGame.nonce)
+      console.log("====================")
+      //Figure out how many players there are and how many tables are needed
+      // let numOfTablesNeeded = Math.round(TournamentGame.players.length - TournamentGame.tableSize)+1
+      // //create array of tables
+      // TournamentGame.table = new Array();
+      // for(let i=0; i<numOfTablesNeeded;i++){
+      //   console.log("TournamentGame for Loop" + i)
+      //   TournamentGame.table[i] = {}
+      //   TournamentGame.table[i].tableCards = TournamentGame.tableCards
+      //   TournamentGame.table[i].pot = TournamentGame.pot
+      //   TournamentGame.table[i].bet = TournamentGame.bet
+      //   TournamentGame.table[i].raise = TournamentGame.raise
+      //   TournamentGame.table[i].playTimeOut = TournamentGame.playTimeOut
+      //   for(let p=0; p<TournamentGame.tableSize+1;p++){
+      //     //console.log(TournamentGame.players.length)
+      //     TournamentGame.table[i].players =TournamentGame.players[p]
+      //   }
+      //   TournamentGame.table[i].serverSeed = tournamentGame.serverSeed
+      //   TournamentGame.table[i].serverHash = tournamentGame.serverHash
+      //   TournamentGame.table[i].cardNo = tournamentGame.cardNo
+      //   TournamentGame.table[i].dealerPassed = tournamentGame.dealerPassed
+      //   TournamentGame.table[i].bigBlindPassed = tournamentGame.bigBlindPassed
+      //   TournamentGame.table[i].dealer = tournamentGame.dealer
+      //   console.log("built Tournament")
+      //   console.log(TournamentGame.table[i])
+      // }
+      console.log("TournamentTableArray ")
+      console.log(TournamentGame)
+      console.log("+++++++++++++++++++++")
       setFirstRound(TournamentGame);
     } else {
       setTimeout(prepareTournamentGame, 1000, TournamentGame);
@@ -1510,13 +1542,13 @@ module.exports = (io, socket, TournamentGames) => {
       });
       return;
     }
-    if (TournamentGame.players.length == TournamentGame.tableSize) {
-      callback({
-        message: 'No seat!',
-        status: false
-      });
-      return;
-    }
+    // if (TournamentGame.players.length == TournamentGame.tableSize) {
+    //   callback({
+    //     message: 'No seat!',
+    //     status: false
+    //   });
+    //   return;
+    // }
     if (!socket.user) {
       callback({
         message: 'Please signin and retry later!',
@@ -1628,7 +1660,17 @@ module.exports = (io, socket, TournamentGames) => {
       console.log(date1 + "  " + date2)
       if(date1 < date2){
         console.log("Date older")
-        if (TournamentGame.players.length >= TournamentGame.tableSize) {
+        //if more then one player we can start
+        if (TournamentGame.players.length >= 2) {
+          if(TournamentGame.players.length <= 9 && TournamentGame.players.length != 1 &&TournamentGame.players.length !=2){
+            TournamentGame.tableSize = TournamentGame.players.length
+          }else if (TournamentGame.players.length == 2){
+            TournamentGame.tableSize = 2
+          }else{
+            //if there is only one person
+            removeTournamentGame(TournamentGame.id)
+          }
+          
           //game start
           if (!TournamentGame.playing) {
             TournamentGame.playing = true;

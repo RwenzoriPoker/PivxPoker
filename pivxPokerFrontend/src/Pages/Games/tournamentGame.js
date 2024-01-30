@@ -1417,7 +1417,7 @@ const TournamentGamesC = ({
                     >
                       Unregister
                     </Button>
-                  ) : table.players.length < table.tableSize ? (
+                  ) :  (
                     <Button
                       color="primary"
                       style={{ margin: "auto auto" }}
@@ -1425,8 +1425,6 @@ const TournamentGamesC = ({
                     >
                       Register
                     </Button>
-                  ) : (
-                    ""
                   )}
                 </Grid>
               </div>
