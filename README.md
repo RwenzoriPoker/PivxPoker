@@ -1,21 +1,20 @@
-admin-page
-    A backend command system that allows users with permission to log into a dashboard for seeing nosql data
+### admin-page
 
-pivxPoker
-    The backend system that controls poker
+A backend command system that allows users with permission to log into a dashboard for seeing nosql data
+### pivxPoker
 
-pivxpokerfrontend
-    The frontend system that users play on. You need to build it then add it to the pivxPoker/build for it to work
+The backend system that controls poker
+### pivxpokerfrontend
 
-landingpage
-    This is the landing page that a user get too they first go to the website. 
-    currently the "new poker" folder is what is being used
+The frontend system that users play on. You need to build it then add it to the pivxPoker/build for it to work
+### landingpage
 
-A reverse proxy is required to make sure everything is routed correctly.
-
-
+This is the landing page that a user get too they first go to the website. 
+currently the "new poker" folder is what is being used
+**A reverse proxy is required to make sure everything is routed correctly.**
 
 # Over all system idea and how it works together
+
 This is by no means a full idea of how this works This is just my ramblings as I try and document an undocumented peice of code so that it is less of a pain for those
 who come after me or who want to work on it some. More info can generally be found inside of the specific folders readme files.
 

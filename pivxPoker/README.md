@@ -89,7 +89,7 @@ or
 
 Tests are handled with jest and all code is under the /test/ folder
 
-The uploads folder needs to include an avatars file otherwise avatars will not work and it won't give you a good error to understand why they aren't working.
+**The uploads folder needs to include an avatars file otherwise avatars will not work and it won't give you a good error to understand why they aren't working.**
 
 Database is mongoose and all the modle files are stored /models/
 
