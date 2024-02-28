@@ -1,4 +1,3 @@
-const unirest = require('unirest');
 const crypto = require('crypto');
 module.exports = (io, socket, users) => {
   // const typing = async () => { 

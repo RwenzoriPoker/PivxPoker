@@ -9,6 +9,7 @@ const Long = mongoose.Schema.Types.Long;
 const userModel = new Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String},
+  ip: { type: String},
   password: { type: String, required: true },
   referrer:{
     type: String

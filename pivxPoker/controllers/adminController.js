@@ -244,8 +244,8 @@ exports.getTotalProfit = async (req, res, next) => {
     { $group: { _id: null, amount: { $sum: '$pivx' } } }
   ]);
   const respond = await getTotalBalance();
-  if (respond.body.error == null) {
-    const balanceWallet = respond.body.result;
+  if (respond.error == null) {
+    const balanceWallet = respond.result;
     return res.status(200).json({ balanceWallet, balanceUsers });
   }
   return res.status(200).json({ balanceWallet: 0, balanceUsers });
@@ -260,7 +260,7 @@ exports.getTotalProfit = async (req, res, next) => {
  */
 exports.postProfitWithdraw = async (req, res, next) => {
   const respond = await sendToAddress(req.body.address, req.body.amount);
-  if (respond.body && respond.body.error == null) {
+  if (respond && respond.error == null) {
     return res.status(200).json({ message: 'Successfully withdrawn!' });
   }
   return res.status(403).json({ message: 'Failed!' });

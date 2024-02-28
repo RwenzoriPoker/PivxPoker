@@ -25,10 +25,14 @@ exports.signup = async (req, res) => {
 
     const hashedPassword = await hashPassword(req.body.password);
 
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
+
     const userData = {
       username: username.toLowerCase().trim(),
       password: hashedPassword
     };
+
+    userData.ip = ip
 
     const existingUsername = await User.findOne({
       username: userData.username
@@ -42,13 +46,13 @@ exports.signup = async (req, res) => {
 
     //get new address
     const respond = await getNewAddress();
-    console.log(respond.body);
-    if (respond.body && respond.body.error == null) {
-      userData.address = respond.body.result;
+    console.log(respond);
+    if (respond && respond.error == null) {
+      userData.address = respond.result;
 
       const respondShield = await getNewShieldAddress()
-      if (respondShield.body && respondShield.body.error == null) {
-        userData.shieldaddress = respondShield.body.result;
+      if (respondShield && respondShield.error == null) {
+        userData.shieldaddress = respondShield.result;
       }
 
       if (referrer && referrer != username) {
@@ -67,11 +71,12 @@ exports.signup = async (req, res) => {
         const decodedToken = jwtDecode(token);
         const expiresAt = decodedToken.exp;
 
-        const { username, role, id, created, pivx, address, my_address,shieldaddress, myshieldaddress } = savedUser;
+        const { username, role, id, ip, created, pivx, address, my_address,shieldaddress, myshieldaddress } = savedUser;
         const userInfo = {
           username,
           role,
           id,
+          ip,
           pivx,
           address,
           my_address,
@@ -134,8 +139,8 @@ exports.authenticate = async (req, res) => {
     if (passwordValid) {
       if (!user.address) {
         const respond = await getNewAddress();
-        if (respond.body && respond.body.error == null) {
-          const data = respond.body.result;
+        if (respond && respond.error == null) {
+          const data = respond.result;
           user.address = data;
           await user.save();
         }
@@ -143,8 +148,8 @@ exports.authenticate = async (req, res) => {
 
       if (!user.shieldaddress) {
         const respond = await getNewShieldAddress();
-        if (respond.body && respond.body.error == null) {
-          const data = respond.body.result;
+        if (respond && respond.error == null) {
+          const data = respond.result;
           user.shieldaddress = data;
           await user.save();
         }

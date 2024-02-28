@@ -17,9 +17,9 @@ exports.getWallet = async (req, res, next) => {
   try {
     if (!user.address) {
       const respond = await getNewAddress();
-      if (respond && respond.body.error == null) {
-        // console.log(respond.body.result);
-        user.address = respond.body.result;
+      if (respond && respond.error == null) {
+        // console.log(respond.result);
+        user.address = respond.result;
       }
     }
   } catch (err) {
@@ -42,8 +42,8 @@ exports.getNewAddress = async (req, res, next) => {
     const now = new Date().getTime();
     if (now - user.updatedAt > 300000) {
       const respond = await getNewAddress();
-      if (respond.body.error == null) {
-        user.address = respond.body.result;
+      if (respond.error == null) {
+        user.address = respond.result;
         user.updatedAt = new Date().getTime();
         await user.save();
         res.status(200).json({ wallet: user.address });
@@ -71,9 +71,9 @@ exports.getShieldWallet = async (req, res, next) => {
   try {
     if (!user.shieldaddress) {
       const respond = await getNewShieldAddress();
-      if (respond && respond.body.error == null) {
+      if (respond && respond.error == null) {
         // console.log(respond.body.result);
-        user.shieldaddress = respond.body.result;
+        user.shieldaddress = respond.result;
       }
     }
   } catch (err) {
@@ -97,8 +97,8 @@ exports.getNewShieldAddress = async (req, res, next) => {
     const now = new Date().getTime();
     if (now - user.updatedAt > 300000) {
       const respond = await getNewShieldAddress();
-      if (respond.body.error == null) {
-        user.shieldaddress = respond.body.result;
+      if (respond.error == null) {
+        user.shieldaddress = respond.result;
         user.updatedAt = new Date().getTime();
         await user.save();
         res.status(200).json({ wallet: user.shieldaddress });
@@ -138,8 +138,8 @@ exports.postWithdrawal = async (req, res, next) => {
     for (let i = 0; i < recharges.length; i++) {
       console.log(recharges[i].txid);
       const respond = await getTransaction(recharges[i].txid);
-      console.log(respond.body);
-      if (respond.body.error != null || respond.body.result.confirmations < 6) {
+      console.log(respond);
+      if (respond.error != null || respond.result.confirmations < 6) {
         return res.status(401).json({
           error:
             'In order to withdraw, all of the transactions must have more than 6 confirmations!'
@@ -151,13 +151,13 @@ exports.postWithdrawal = async (req, res, next) => {
 
     if (amount > 0) {
       const respond = await sendToAddress(address, amount);
-      console.log(respond.body.error)
-      if (respond.body && respond.body.error == null) {
+      console.log(respond.error)
+      if (respond && respond.error == null) {
         const comp = {};
         comp.user = user.id;
         comp.address = address;
         comp.amount = amount;
-        comp.txid = respond.body.result;
+        comp.txid = respond.result;
         user = await User.findByIdAndUpdate(
           req.user.id,
           {
@@ -200,7 +200,7 @@ exports.getAdminWithdrawal = async (req, res, next) => {
   for (var i = 0; i < withdrawals.length; i++) {
     try {
       const respond = await getTransaction(withdrawals[i].txid);
-      withdrawals[i].confirmations=respond.body.result.confirmations;
+      withdrawals[i].confirmations=respond.result.confirmations;
       await withdrawals[i].save();
       const aa = await User.findById(withdrawals[i].user);
       res_data[i] = {};
@@ -288,7 +288,7 @@ exports.getAdminRecharge = async (req, res, next) => {
   for (var i = 0; i < recharges.length; i++) {
     try {
       const respond = await getTransaction(recharges[i].txid);
-      recharges[i].confirmations=respond.body.result.confirmations;
+      recharges[i].confirmations=respond.result.confirmations;
       await recharges[i].save();
       const aa = await User.findById(recharges[i].user);
       res_data[i] = {};
@@ -323,7 +323,7 @@ exports.getWithdrawalList = async (req, res, next) => {
   const data=[];
   for(let i=0;i<withdrawals.length;i++){
     const respond = await getTransaction(withdrawals[i].txid);
-    withdrawals[i].confirmations=respond.body.result.confirmations;
+    withdrawals[i].confirmations=respond.result.confirmations;
     await withdrawals[i].save();
     const item=[];
     item.push(withdrawals[i].txid);
@@ -349,7 +349,7 @@ exports.getRechargeList = async (req, res, next) => {
   const recharges = await Recharge.find({ user: req.user.id});
   for (recharge of recharges) {
     const respond = await getTransaction(recharge.txid);
-    recharge.confirmations = respond.body.result.confirmations;
+    recharge.confirmations = respond.result.confirmations;
     await recharge.save();
     const item=[];
     item.push(recharge.txid);

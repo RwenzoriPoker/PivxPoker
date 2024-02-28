@@ -32,17 +32,22 @@ https://www.mongodb.com/docs/manual/administration/install-on-linux/
 
 install nodejs (19 recommended)
 https://github.com/nodesource/distributions/blob/master/README.md
+It node lts also works (v 20.11 at the time of writing)
+Node latest is not working at the time of writing (21.x)
 
 ```
 sudo apt-get install build-essential
 sudo apt install node-pre-gyp 
 ```
 `npm i` 
-If you have issues purge the package-lock and any node_modules you have and try again
-switching node versions OSes or anything else can cause a number of issues with node-gyp building
-nodejs 19 with node-gyp compiles on debian. Each OS and version of node could have diffrent issues and at the moment I don't have the time to support every platform
+**If you have issues purge the package-lock and any node_modules you have and try again**
+**If you still have issues try:**
+`sudo apt-get install libzmq3-dev`
 
-Once you pivx Daemon syncs restart it so that it is using the settings from the config file
+switching node versions OSes or anything else can cause a number of issues with node-gyp building
+nodejs 19 with node-gyp compiles on debian. Each OS and version of node could have different issues and at the moment I don't have the time to support every platform
+
+Once your pivx Daemon syncs restart it so that it is using the settings from the config file
 
 .env file:
 ```
@@ -91,7 +96,7 @@ Tests are handled with jest and all code is under the /test/ folder
 
 **The uploads folder needs to include an avatars file otherwise avatars will not work and it won't give you a good error to understand why they aren't working.**
 
-Database is mongoose and all the modle files are stored /models/
+Database is mongoose and all the model files are stored /models/
 
 The utils file is a little under utilized but includes a bunch of files that can be helpful and sometimes get included in other areas of the site.
 
