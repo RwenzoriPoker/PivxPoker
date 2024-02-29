@@ -3,7 +3,7 @@ const User = require('../models/user');
 const RpcClient = require('bitcoind-rpc');
 const zmq = require('zeromq');
 
-const { decodeRawTransactiontest } = require('../utils/pivx');
+const { decodeRawTransactiontest, getTransaction } = require('../utils/pivx');
 
 const sock = zmq.socket('sub');
 const addr = 'tcp://127.0.0.1:28332';
@@ -27,7 +27,6 @@ let txid="";
 module.exports = (io, socket, users) => {
   //read transaction and deposit
   sock.on('message', function (topic, message) {
-    console.log('rawtx');
     if (topic.toString() === 'rawtx') {
       // console.log(message.toString('hex'));
       // console.log("...")
@@ -37,7 +36,6 @@ module.exports = (io, socket, users) => {
       rpc.decodeRawTransaction(message.toString('hex'), async function (err, resp) {
 
         //console.log(resp.result.vout.scriptPubKey.addresses.length)
-        console.log("******")
         //console.log(err);
         //console.log("RESPONSE:")
         //console.log(resp);
@@ -54,15 +52,13 @@ module.exports = (io, socket, users) => {
             if (receiver.scriptPubKey.addresses) {
               for (const address of receiver.scriptPubKey.addresses) {
                 try {
-                  console.log('address='+address);
+
                   let user = await User.findOne({ address });
                   if (user) {
-                    console.log("Here");
-                    console.log("txid="+resp.result.txid);
-                    console.log("user id="+user.id);
+
                     const recharged=await Recharge.countDocuments({txid:resp.result.txid, user:user.id});
                     if(recharged>0){
-                      console.log('repeat');
+
                       continue;
                     }
                     // console.log(resp.result.txid)
@@ -97,36 +93,22 @@ module.exports = (io, socket, users) => {
           }
           //Shielded Try
             if (resp.result.shielded_addresses) {
-              console.log("shieldCheck")
-              console.log(resp.result)
-              console.log("==========")
-              console.log(resp.result.txid)
-              console.log(resp.result.vout.scriptPubKey)
-              console.log("==========")
               for (const shieldaddress of resp.result.shielded_addresses) {
                 try {
-                  console.log('address='+shieldaddress);
-
                   let user = await User.findOne({ shieldaddress });
                   if (user) {
-                    console.log("Here");
-                    console.log("txid="+resp.result.txid);
-                    console.log("user id="+user.id);
                     const recharged=await Recharge.countDocuments({txid:resp.result.txid, user:user.id});
                     if(recharged>0){
-                      console.log('repeat');
                       continue;
                     }
                     // console.log(resp.result.txid)
                     const tmp_recharge = {};
                     tmp_recharge.user = user.id;
                     tmp_recharge.txid = resp.result.txid;
-                    console.log(resp.result.shielded_addresses)
-                    console.log(resp.result.shielded_addresses.length)
-                    console.log(resp.result.vout)
-                    tmp_recharge.amount = Math.abs(resp.result.valueBalanceSat)
+
+                    let individualTransactionInfo = await getTransaction(resp.result.txid)
+                    tmp_recharge.amount = Math.abs(individualTransactionInfo.result.amount)* 100000000 //Multiply to get it to satoshi
                       
-                    console.log(tmp_recharge.amount);
                     await new Recharge(tmp_recharge).save();
                     user=await User.findByIdAndUpdate(user.id, {
                       $inc: {
@@ -135,7 +117,6 @@ module.exports = (io, socket, users) => {
                     }, { new: true });
                     const no=users.findIndex(ele=>ele.userId==user.id);
                     if(no>-1){
-                      console.log("out to socket");
                       io.to(users[no].socketId).emit("message", {
                         message:tmp_recharge.amount+" chips are recharged successfuly!", 
                         pivx:user.pivx});
