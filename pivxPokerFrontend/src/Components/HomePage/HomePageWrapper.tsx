@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import background from "./background.png";
+import backgroundDesign from "../../images/gridanimatedv3.svg";
+//FIX THE FUCKING BACKGROUND
+
 
 const Wrapper = styled.div`
    height: 100%;
@@ -12,7 +14,7 @@ const Wrapper = styled.div`
 `;
 const HomePageWrapper: React.FC = ({ children }) => {
    return (
-      <Wrapper style={{ background: `url('https://cdn.discordapp.com/attachments/789310651679244288/1150490979254685856/gridanimatedv3.svg')` }}>
+      <Wrapper style={{ backgroundImage: `url(${backgroundDesign})` }}>
          {children}
       </Wrapper>
    );

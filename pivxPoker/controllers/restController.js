@@ -1,4 +1,3 @@
-var request = require('request');
 const User = require('../models/user');
 const Visited = require('../models/visited');
 

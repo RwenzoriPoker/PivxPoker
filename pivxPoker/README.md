@@ -32,7 +32,7 @@ https://www.mongodb.com/docs/manual/administration/install-on-linux/
 
 install nodejs (19 recommended)
 https://github.com/nodesource/distributions/blob/master/README.md
-It node lts also works (v 20.11 at the time of writing)
+Node lts also works (v 20.11 at the time of writing the frontend may require 19 depending on your os) 
 Node latest is not working at the time of writing (21.x)
 
 ```
