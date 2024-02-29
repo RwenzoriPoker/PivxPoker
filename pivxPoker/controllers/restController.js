@@ -45,7 +45,7 @@ exports.signup = async (req, res) => {
 
     //get new address
     const respond = await getNewAddress();
-    console.log(respond);
+
     if (respond && respond.error == null) {
       userData.address = respond.result;
 
