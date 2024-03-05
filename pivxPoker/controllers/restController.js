@@ -279,6 +279,8 @@ exports.getBonus = async (req, res, next) => {
       item.push(ele.amount);
       return item;
     });
+    console.log(downLines)
+    console.log(bonus)
     return res.status(200).json({
       downLines,
       bonus
