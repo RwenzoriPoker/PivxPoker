@@ -1,0 +1,118 @@
+.mobile-footer {
+    height: 9%;
+    background: rgba(25, 33, 43, 0.94);
+    position: absolute;
+    bottom: 0px;
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 12px;
+    text-align: center;
+    padding: le;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.mobile-footer div {
+    cursor: pointer;
+}
+
+.table-icon {
+    width: 50px
+}
+
+.center-tab {
+    position: relative;
+    bottom: 26px;
+}
+
+
+.fs25 {
+    font-size: 25px;
+}
+
+.fs29 {
+    font-size: 19px;
+}
+
+.f-bold {
+    font-weight: bold;
+}
+
+.br10 {
+    border-radius: 10px;
+}
+
+.fs8 {
+    font-size: 8px;
+}
+
+.filter-popup {
+    color: white;
+    height: 60%;
+    position: relative;
+    justify-content: center;
+    background: #2a313b;
+    /* width: 100%; */
+    padding: 8px;
+    top: 40%;
+
+}
+
+.dull-backgound {
+    position: absolute;
+    background: #0000008a;
+    height: 100%;
+    width: 100%;
+    z-index: 11;
+
+}
+
+.filter-btn {
+    width: 80%;
+}
+
+.caps {
+    text-transform: uppercase;
+}
+
+.btn-theme {
+    background: rgba(0, 0, 0, 0.35)
+}
+
+.fs13 {
+    font-size: 13px;
+}
+
+.poker-chips{
+    width: 13px;
+    height: 13px;
+}
+.tournament-row {
+    background: #2d3746;
+    height: 60px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size:13px;
+}
+.tournament-mobile{
+    overflow:scroll;
+}
+.tournament-row-bottom span{
+    margin-right:15px;
+    color: #b7b9bb;
+}
+
+.tournament-row-bottom i{
+    color: #868f98;
+}
+.type-card{
+    width:20px;
+    text-align:center;
+    color: white;
+    font-weight:bold;
+    margin-left:5px;
+}

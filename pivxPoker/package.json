@@ -1,0 +1,50 @@
+{
+  "name": "roulette-api",
+  "version": "1.0.0",
+  "description": "Roulette GCU Backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "startVerbose": "node --trace-warnings index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "Live Casino",
+    "GCU",
+    "Rest",
+    "MERN"
+  ],
+  "author": "Vovochka Perepelkin Vladimir",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "bitcoind-rpc": "0.8.1",
+    "body-parser": "^1.19.0",
+    "clone": "^2.1.2",
+    "cors": "^2.8.5",
+    "discord.js": "^14.12.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.5.0",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^2.2.0",
+    "mongoose": "^5.13.20",
+    "mongoose-long": "^0.4.0",
+    "mongoose-long-integer": "0.0.4",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "socket.io": "^4.6.1",
+    "zeromq": "^5.2.8"
+  },
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "jest": "^26.0.1",
+    "nodemon": "^3.0.1",
+    "prettier": "^2.0.5",
+    "supertest": "^4.0.2"
+  },
+  "overrides": {
+    "tough-cookie": "^4.1.3"
+  }
+}
